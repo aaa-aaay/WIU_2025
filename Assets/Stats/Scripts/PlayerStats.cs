@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
-    public int startStrength;
-    public int startSpeed;
-    public int startDefence;
-    public int startHealth;
+    private int startStrength;
+    private int startSpeed;
+    private int startDefence;
+    private int startHealth;
 
     private int strength;
     private int speed;
@@ -18,6 +18,14 @@ public class PlayerStats : MonoBehaviour
 
     private bool unlockedHeal;
     private bool unlockedBarrier;
+
+    public int Strength => strength;
+    public int Speed => speed;
+    public int Defence => defence;
+    public int Health => health;
+    public int MaxHealth => startHealth;
+    public bool UnlockedHeal => unlockedHeal;
+    public bool UnlockedBarrier => unlockedBarrier;
 
     private void Start()
     {
