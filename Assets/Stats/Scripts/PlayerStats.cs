@@ -4,18 +4,62 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
-    public int startHealth;
-    public int startSpeed;
     public int startStrength;
-    // Start is called before the first frame update
-    void Start()
+    public int startSpeed;
+    public int startDefence;
+    public int startHealth;
+
+    private int strength;
+    private int speed;
+    private int defence;
+    private int health;
+    private int healPercentage;
+    private int barrierPercentage;
+
+    private bool unlockedHeal;
+    private bool unlockedBarrier;
+
+    private void Start()
     {
-        
+        strength = startStrength;
+        speed = startSpeed;
+        defence = startDefence;
+        health = startHealth;
+        unlockedHeal = false;
+        unlockedBarrier = false;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void UpgradeStat(SkillSO type)
     {
-        
+        switch (type.upgradeType)
+        {
+            case SkillSO.UpgradeType.Strength:
+                strength += type.statChange;
+                break;
+            case SkillSO.UpgradeType.Speed:
+                speed += type.statChange;
+                break;
+            case SkillSO.UpgradeType.Defence:
+                defence += type.statChange;
+                break;
+            case SkillSO.UpgradeType.MaxHealth:
+                startHealth += type.statChange;
+                health += type.statChange;
+                break;
+            case SkillSO.UpgradeType.Heal:
+                unlockedHeal = true;
+                break;
+            case SkillSO.UpgradeType.Barrier:
+                unlockedBarrier = true;
+                break;
+        }
+    }
+
+    public void TakeDamage(int amt)
+    {
+        if (amt - defence > 0)
+        {
+            health = health - (amt - defence);
+        }
     }
 }
