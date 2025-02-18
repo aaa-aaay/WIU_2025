@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
+
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,6 +6,7 @@ using System.Linq;
 
 public class InvenUIManager : MonoBehaviour
 {
+    [SerializeField] private PlayerInven playerIven;
     [SerializeField] GameObject potionPanel;
     [SerializeField] GameObject WeaponPanel;
 
@@ -29,10 +28,16 @@ public class InvenUIManager : MonoBehaviour
         potionPanel.SetActive(false);
         WeaponPanel.SetActive(false);
 
+        playerIven.OnInventoryUpdated += UpdatePotionUI;
+
     }
 
 
-    private void UpdateUI()
+    private void UpdatePotionUI(Sprite img, int count)
     {
+        potionPanel.SetActive(true);
+        potionImage.sprite = img;
+        potionCount.text = count.ToString();
+
     }
 }

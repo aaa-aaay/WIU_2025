@@ -10,7 +10,7 @@ public abstract class Item : MonoBehaviour
     protected string itemName;
     protected string discription;
     protected bool isStackable;
-    protected Sprite uiImage;
+    public Sprite uiImage;
 
     private void Start()
     {
