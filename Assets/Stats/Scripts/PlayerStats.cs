@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
-    private int startStrength;
-    private int startSpeed;
-    private int startDefence;
-    private int startHealth;
+    [SerializeField] private int startStrength;
+    [SerializeField] private int startSpeed;
+    [SerializeField] private int startDefence;
+    [SerializeField] private int startHealth;
 
     private int strength;
     private int speed;
