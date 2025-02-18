@@ -1,73 +1,59 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
-    [SerializeField] private int startStrength;
-    [SerializeField] private int startSpeed;
-    [SerializeField] private int startDefence;
-    [SerializeField] private int startHealth;
+    [SerializeField] private List<StatEntry> startStats = new List<StatEntry>(); // set stats in the inspector
+    private Dictionary<SkillSO.UpgradeType, int> stats = new Dictionary<SkillSO.UpgradeType, int>();
+    private bool unlockedHeal = false;
+    private bool unlockedBarrier = false;
 
-    private int strength;
-    private int speed;
-    private int defence;
-    private int health;
-    private int healPercentage;
-    private int barrierPercentage;
-
-    private bool unlockedHeal;
-    private bool unlockedBarrier;
-
-    public int Strength => strength;
-    public int Speed => speed;
-    public int Defence => defence;
-    public int Health => health;
-    public int MaxHealth => startHealth;
+    public int Strength => stats[SkillSO.UpgradeType.Strength];
+    public int Speed => stats[SkillSO.UpgradeType.Speed];
+    public int Defence => stats[SkillSO.UpgradeType.Defence];
+    public int Health { get; private set; }
+    public int Mana => stats[SkillSO.UpgradeType.Mana];
+    public int Gold => stats[SkillSO.UpgradeType.Gold];
+    public int MaxHealth => stats[SkillSO.UpgradeType.MaxHealth];
     public bool UnlockedHeal => unlockedHeal;
     public bool UnlockedBarrier => unlockedBarrier;
 
     private void Start()
     {
-        strength = startStrength;
-        speed = startSpeed;
-        defence = startDefence;
-        health = startHealth;
-        unlockedHeal = false;
-        unlockedBarrier = false;
+        // initialize variables with values set in inspector
+        foreach (var entry in startStats)
+        {
+            stats[entry.statType] = entry.value;
+        }
+        Health = MaxHealth;
     }
 
     public void UpgradeStat(SkillSO type)
     {
-        switch (type.upgradeType)
+        if (type.upgradeType == SkillSO.UpgradeType.Heal)
         {
-            case SkillSO.UpgradeType.Strength:
-                strength += type.statChange;
-                break;
-            case SkillSO.UpgradeType.Speed:
-                speed += type.statChange;
-                break;
-            case SkillSO.UpgradeType.Defence:
-                defence += type.statChange;
-                break;
-            case SkillSO.UpgradeType.MaxHealth:
-                startHealth += type.statChange;
-                health += type.statChange;
-                break;
-            case SkillSO.UpgradeType.Heal:
-                unlockedHeal = true;
-                break;
-            case SkillSO.UpgradeType.Barrier:
-                unlockedBarrier = true;
-                break;
+            unlockedHeal = true;
+        }
+        else if (type.upgradeType == SkillSO.UpgradeType.Barrier)
+        {
+            unlockedBarrier = true;
+        }
+        else if (stats.ContainsKey(type.upgradeType))
+        {
+            stats[type.upgradeType] += type.statChange;
+            if (type.upgradeType == SkillSO.UpgradeType.MaxHealth)
+                Health += type.statChange; // Also increase current health
         }
     }
 
     public void TakeDamage(int amt)
     {
-        if (amt - defence > 0)
-        {
-            health = health - (amt - defence);
-        }
+        int damage = Mathf.Max(amt - Defence, 0); // Ensure no negative damage
+        Health = Mathf.Max(Health - damage, 0); // Prevent negative health
     }
+
+    //private int GetStat(SkillSO.UpgradeType statType)
+    //{
+    //    return stats.ContainsKey(statType) ? stats[statType] : 0;
+    //}
 }

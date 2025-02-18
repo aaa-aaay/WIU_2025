@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 54207cc925a9ad44785fb4cbacaed5dd, type: 3}
-  m_Name: Defence Upgrade
+  m_Name: DefenceUpgrade
   m_EditorClassIdentifier: 
   skillName: Defence Upgrade
   description: Max Defence ( + 1 )
   upgradeType: 0
-  statChange: 0
+  statChange: 1
