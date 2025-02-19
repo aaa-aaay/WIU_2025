@@ -91,6 +91,10 @@ public class PlayerStats : MonoBehaviour
 
         Defence = originalDefence; // reset def
     }
+    public bool HasEnoughGold(int requiredGold)
+    {
+        return Gold >= requiredGold;
+    }
 
     //private int GetStat(SkillSO.UpgradeType statType)
     //{

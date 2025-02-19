@@ -15,4 +15,8 @@ MonoBehaviour:
   skillName: Health Upgrade
   description: Max Health ( + 5 )
   upgradeType: 2
-  statIncrease: 5
+  statChange: 0
+  maxUnlocks: 5
+  currUnlocks: 0
+  isUnlocked: 0
+  prevNodes: []

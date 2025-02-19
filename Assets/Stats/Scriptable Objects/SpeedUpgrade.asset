@@ -15,4 +15,10 @@ MonoBehaviour:
   skillName: Speed Upgrade
   description: Max Speed ( + 1 )
   upgradeType: 1
-  statChange: 0
+  statChange: 1
+  maxUnlocks: 5
+  currUnlocks: 0
+  isUnlocked: 0
+  prevNodes:
+  - {fileID: 11400000, guid: 6ca436411eae91646b7a56aa804a500c, type: 2}
+  - {fileID: 11400000, guid: af916329c8f76df47882ea104f4c5191, type: 2}

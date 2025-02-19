@@ -15,4 +15,8 @@ MonoBehaviour:
   skillName: Strength Upgrade
   description: Max Strength ( + 3 )
   upgradeType: 0
-  statChange: 0
+  statChange: 3
+  maxUnlocks: 5
+  currUnlocks: 0
+  isUnlocked: 0
+  prevNodes: []

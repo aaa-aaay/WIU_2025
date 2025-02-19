@@ -10,13 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 54207cc925a9ad44785fb4cbacaed5dd, type: 3}
-  m_Name: DefenceUpgrade
+  m_Name: BarrierSkill
   m_EditorClassIdentifier: 
-  skillName: Defence Upgrade
-  description: Max Defence ( + 1 )
-  upgradeType: 0
-  statChange: 1
-  maxUnlocks: 5
+  skillName: Barrier
+  description: Grants 50% of current Defence for 3 seconds
+  upgradeType: 7
+  statChange: 50
+  maxUnlocks: 1
   currUnlocks: 0
   isUnlocked: 0
-  prevNodes: []
+  prevNodes:
+  - {fileID: 11400000, guid: af639237b7546be44b6d8300eee2a38c, type: 2}
