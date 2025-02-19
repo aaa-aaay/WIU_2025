@@ -1,13 +1,14 @@
 using UnityEngine;
 using System.Collections;
 
-public class PlayerControllerActual : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     [Header("References")]
     public Transform cameraTarget;
     public Camera playerCamera;
     private Animator _animator;
     private CharacterController _cc;
+    private PlayerStats _playerStats; // Reference to PlayerStats
 
     [Header("Movement Settings")]
     public float walkSpeed = 3.0f;
@@ -44,7 +45,8 @@ public class PlayerControllerActual : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         _cc = GetComponent<CharacterController>();
-        _animator.applyRootMotion = false;
+        _playerStats = GetComponent<PlayerStats>(); // Initialize PlayerStats reference
+        _animator.applyRootMotion = true;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         defaultYPos = cameraTarget.localPosition.y;
@@ -56,18 +58,16 @@ public class PlayerControllerActual : MonoBehaviour
         HandleMovement();
         HandleDodge();
         HandleRoll();
+        HandleHealthAndAbilities(); // Handle health and abilities (e.g., healing, barrier)
     }
 
     private void HandleCameraRotation()
     {
         float mouseX = Input.GetAxis("Mouse X") * cameraSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * cameraSensitivity * Time.deltaTime;
-
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
         yRotation += mouseX;
-
-        //moedl and camerea same direction
         cameraTarget.rotation = Quaternion.Euler(xRotation, yRotation, 0f);
         Quaternion targetRotation = Quaternion.Euler(0, yRotation, 0);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * playerTurnSpeed);
@@ -81,6 +81,9 @@ public class PlayerControllerActual : MonoBehaviour
         bool isRunning = Input.GetKey(KeyCode.LeftShift);
         bool isMoving = input.sqrMagnitude > 0.01f;
         float currentSpeed = isRunning ? runSpeed : walkSpeed;
+
+        // Adjust speed based on PlayerStats
+        currentSpeed *= _playerStats.Speed / 100f; // 
 
         if (isMoving)
         {
@@ -135,27 +138,19 @@ public class PlayerControllerActual : MonoBehaviour
 
     private IEnumerator DodgeMovement(Vector3 dodgeDir)
     {
-        //dodge
         float dodgeDuration = 0.3f;
         float elapsedTime = 0f;
         float speed = dodgeDistance / dodgeDuration;
-
-        //camera
         Vector3 originalCameraPos = playerCamera.transform.localPosition;
         Quaternion originalCameraRot = playerCamera.transform.localRotation;
         Vector3 dodgeCameraPos = new Vector3(originalCameraPos.x, originalCameraPos.y - 0.5f, originalCameraPos.z);
         Quaternion dodgeCameraRot = Quaternion.Euler(20, originalCameraRot.eulerAngles.y, originalCameraRot.eulerAngles.z);
-
-        //hiehgt center collider
         float originalHeight = _cc.height;
         Vector3 originalCenter = _cc.center;
         float reducedHeight = originalHeight * 0.5f;
-
         Vector3 reducedCenter = new Vector3(originalCenter.x, originalCenter.y - originalHeight * 0.25f, originalCenter.z);
         _cc.height = reducedHeight;
         _cc.center = reducedCenter;
-
-
         while (elapsedTime < dodgeDuration)
         {
             _cc.Move(dodgeDir * speed * Time.deltaTime);
@@ -164,13 +159,10 @@ public class PlayerControllerActual : MonoBehaviour
             playerCamera.transform.localRotation = Quaternion.Lerp(originalCameraRot, dodgeCameraRot, elapsedTime / dodgeDuration);
             yield return null;
         }
-
         _cc.height = originalHeight;
         _cc.center = originalCenter;
-
         float resetTime = 0.4f;
         elapsedTime = 0f;
-
         while (elapsedTime < resetTime)
         {
             playerCamera.transform.localPosition = Vector3.Lerp(dodgeCameraPos, originalCameraPos, elapsedTime / resetTime);
@@ -212,22 +204,16 @@ public class PlayerControllerActual : MonoBehaviour
         float rollDuration = 0.5f;
         float elapsedTime = 0f;
         float speed = rollDistance / rollDuration;
-
-        //camera 
         Vector3 originalCameraPos = playerCamera.transform.localPosition;
         Quaternion originalCameraRot = playerCamera.transform.localRotation;
         Vector3 rollCameraPos = new Vector3(originalCameraPos.x, originalCameraPos.y - 1.2f, originalCameraPos.z);
         Quaternion rollCameraRot = Quaternion.Euler(25, originalCameraRot.eulerAngles.y, originalCameraRot.eulerAngles.z);
-
-        //collider
         float originalHeight = _cc.height;
         Vector3 originalCenter = _cc.center;
         float reducedHeight = originalHeight * 0.5f;
         Vector3 reducedCenter = new Vector3(originalCenter.x, originalCenter.y - originalHeight * 0.25f, originalCenter.z);
-
         _cc.height = reducedHeight;
         _cc.center = reducedCenter;
-
         while (elapsedTime < rollDuration)
         {
             _cc.Move(rollDir * speed * Time.deltaTime);
@@ -236,10 +222,8 @@ public class PlayerControllerActual : MonoBehaviour
             playerCamera.transform.localRotation = Quaternion.Lerp(originalCameraRot, rollCameraRot, elapsedTime / rollDuration);
             yield return null;
         }
-
         _cc.height = originalHeight;
         _cc.center = originalCenter;
-
         elapsedTime = 0f;
         while (elapsedTime < 0.3f)
         {
@@ -251,5 +235,26 @@ public class PlayerControllerActual : MonoBehaviour
 
         isDodging = false;
         _animator.SetBool("roll", false);
+    }
+
+    private void HandleHealthAndAbilities()
+    {
+        // Example: Heal when pressing H
+        if (Input.GetKeyDown(KeyCode.H) && _playerStats.UnlockedHeal)
+        {
+            _playerStats.Heal();
+        }
+
+        // Example: Activate barrier when pressing B
+        if (Input.GetKeyDown(KeyCode.B) && _playerStats.UnlockedBarrier)
+        {
+            _playerStats.Barrier();
+        }
+
+        // Example: Take damage when pressing T (for testing)
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            _playerStats.TakeDamage(10);
+        }
     }
 }
