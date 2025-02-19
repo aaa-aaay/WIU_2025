@@ -10,6 +10,7 @@ public class Shop : MonoBehaviour
     [SerializeField] private GameObject shopCanvas;
     [SerializeField] private List<ShopSlot> shopSlots;
     [SerializeField] private List<ShopSlot> playerSlot;
+    [SerializeField] private List<Item> shopItems;
 
     private List<Item> items;
 
@@ -20,21 +21,27 @@ public class Shop : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         PlayerInven player = other.gameObject.GetComponentInChildren<PlayerInven>();
-        if(player != null)
+        if (player != null)
         {
-            if (Input.GetKey(KeyCode.E)) {
+            if (Input.GetKey(KeyCode.E))
+            {
 
                 //openShop
                 shopCanvas.SetActive(true);
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
                 items = player.GetPlayerInventory();
                 DisplayInventory();
+                DisplayShop();
+
             }
         }
     }
     private void OnTriggerExit(Collider other)
     {
         PlayerInven player = other.gameObject.GetComponentInChildren<PlayerInven>();
-        if(player != null) {
+        if (player != null)
+        {
             shopCanvas.SetActive(false);
         }
     }
@@ -42,51 +49,61 @@ public class Shop : MonoBehaviour
 
     private void DisplayInventory()
     {
-        Debug.Log("Player Inventory Count: " + items.Count);
 
-        foreach (var slot in shopSlots)
+        foreach (var slot in playerSlot)
         {
-            slot.ClearInfo(); 
+            slot.ClearInfo();
         }
-        // Filter out any null or destroyed items
-        foreach (var item in items)
-        {
-            if (item == null)
-            {
-                Debug.LogWarning("Null item detected before filtering.");
-            }
-            else if (item.gameObject == null)
-            {
-                Debug.LogWarning($"Destroyed item detected: {item.name}");
-            }
-            else
-            {
-                Debug.Log($"Valid item: {item.name}");
-            }
-        }
-
-
+        
         items = items.Where(item => item != null).ToList();
-        Debug.Log("Player Inventory Count: " + items.Count);
+        
+        var groupedItems = items
+            .GroupBy(item => item.itemName)
+            .Select(group => new
+            {
+                Item = group.First(), // Use the first item for UI display
+                Count = group.Count()  // Count how many exist
+            }).ToList();
 
-        //var groupedItems = items
-        //    .Where(item => item != null) // Ensure no destroyed objects are processed
-        //    .GroupBy(item => item.name)
-        //    .Select(group => new
-        //    {
-        //        Item = group.First(),
-        //        Count = group.Count()
-        //    }).ToList();
-
-        for (int i = 0; i < items.Count && i < shopSlots.Count; i++)
+        for (int i = 0; i < groupedItems.Count && i < playerSlot.Count; i++)
         {
-            shopSlots[i].SetInfo(
-                items.Count,
-                items[i].uiImage,
-                items[i].name,
-                "testing",
-                10
+            playerSlot[i].SetInfo(
+                groupedItems[i].Count,   
+                groupedItems[i].Item.uiImage,
+                groupedItems[i].Item.itemName,
+                groupedItems[i].Item.discription,
+                groupedItems[i].Item.price
             );
         }
     }
+    private void DisplayShop()
+    {
+        foreach (var slot in shopSlots)
+        {
+            slot.ClearInfo();
+        }
+
+        shopItems = shopItems.Where(shopItems => shopItems != null).ToList();
+
+        var groupedItems = shopItems
+            .GroupBy(shopItems => shopItems.itemName)
+            .Select(group => new
+            {
+                Item = group.First(), // Use the first item for UI display
+                Count = group.Count()  // Count how many exist
+            }).ToList();
+
+        for (int i = 0; i < groupedItems.Count && i < shopSlots.Count; i++)
+        {
+            shopSlots[i].SetInfo(
+                groupedItems[i].Count,
+                groupedItems[i].Item.uiImage,
+                groupedItems[i].Item.itemName,
+                groupedItems[i].Item.discription,
+                groupedItems[i].Item.price
+            );
+        }
+    }
+
 }
+

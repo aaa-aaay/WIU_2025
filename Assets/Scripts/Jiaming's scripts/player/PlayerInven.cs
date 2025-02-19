@@ -74,7 +74,7 @@ public class PlayerInven : MonoBehaviour
 
             OnInventoryUpdated?.Invoke(healthpotion.First().uiImage, healthpotion.Count);
             //update the ui with the new count;
-        }
+        }    
         else if (currentPotionDisplayed == 2)
         {
             if (mamaPotion.Count == 0)
@@ -97,9 +97,6 @@ public class PlayerInven : MonoBehaviour
                 else if (mamaPotion.Count > 0) currentPotionDisplayed = 2;
                 UpdatePotionUI();
             }
-
-
-
 
         }
     }

@@ -8,17 +8,19 @@ public abstract class Item : MonoBehaviour
     [SerializeField] protected ItemSO itemSo;
 
 
-    protected string itemName;
-    protected string discription;
+    public string itemName;
+    public string discription;
     protected bool isStackable;
     public Sprite uiImage;
+    public int price;
 
-    private void Start()
+    protected void Start()
     {
         itemName = itemSo.itemName;
         discription = itemSo.description;
         isStackable = itemSo.stackable;
         uiImage = itemSo.UI_Image;
+        price = itemSo.price;
     }
     public void PickUp(GameObject Caller)
     {

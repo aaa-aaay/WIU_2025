@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class Weapon : Item
 {
-
-    // Start is called before the first frame update
-    void Start()
+    [HideInInspector]public float damage; 
+    [HideInInspector]public float skillDamage; 
+    private void Start()
     {
-        
-    }
+        base.Start();
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (itemSo is WeaponSO weapon) 
+        {
+            damage = weapon.damage;
+            skillDamage = weapon.skillDamage;
+        }
+
     }
 }
