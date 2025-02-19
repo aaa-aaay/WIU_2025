@@ -33,8 +33,13 @@ public class InvenUIManager : MonoBehaviour
     }
 
 
-    private void UpdatePotionUI(Sprite img, int count)
+    private void UpdatePotionUI(Sprite img = null , int count = 0)
     {
+        if(count <= 0)
+        {
+            potionPanel.SetActive(false);
+            return;
+        }
         potionPanel.SetActive(true);
         potionImage.sprite = img;
         potionCount.text = count.ToString();
