@@ -152,7 +152,7 @@ public class PlayerInven : MonoBehaviour
                     weaponList.Add((Weapon)item);
                 }
 
-
+                 
                 item.PickUp();
                 pickUpPanel.SetActive(false);
                 StartCoroutine(ResetPickup());

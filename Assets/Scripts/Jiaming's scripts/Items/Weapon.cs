@@ -6,7 +6,7 @@ public class Weapon : Item
 {
     public override void PickUp()
     {
-        Destroy(this);
+        Destroy(gameObject);
     }
 
     // Start is called before the first frame update
