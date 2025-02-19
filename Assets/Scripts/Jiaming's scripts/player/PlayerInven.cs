@@ -42,15 +42,19 @@ public class PlayerInven : MonoBehaviour
     {
         if(Input.GetKeyDown(tempKeyCodeSwitchPotion) || Input.GetKeyDown(tempKeyCodeSwitchPotion2))
         {
-            if (currentPotionDisplayed == 1)
+            if (currentPotionDisplayed == 1 && mamaPotion.Count > 0)
                 currentPotionDisplayed = 2;
-            else if (currentPotionDisplayed == 2) 
+            else if (currentPotionDisplayed == 2 && healthpotion.Count > 0) 
                 currentPotionDisplayed = 1;
 
+            if(healthpotion.Count < 0 && healthpotion.Count < 0)
+            {
+                currentPotionDisplayed = 0;
+            }
             UpdatePotionUI();
         }
 
-        if (Input.GetKeyDown(tempKeyCode2))
+        if (Input.GetKeyDown(tempKeyCode2) && (healthpotion.Count > 0 || mamaPotion.Count > 0))
         {
             UsePotion();
         }
@@ -86,10 +90,15 @@ public class PlayerInven : MonoBehaviour
 
         else if (currentPotionDisplayed == 0)
         {
-            if (healthpotion.Count > 0) currentPotionDisplayed = 1;
-            else if (mamaPotion.Count > 0) currentPotionDisplayed = 2;
+            if(healthpotion.Count > 0 || mamaPotion.Count > 0)
+            {
+                if (healthpotion.Count > 0) currentPotionDisplayed = 1;
+                else if (mamaPotion.Count > 0) currentPotionDisplayed = 2;
+                UpdatePotionUI();
+            }
+
              
-            UpdatePotionUI();
+
         }
     }
 
@@ -99,6 +108,7 @@ public class PlayerInven : MonoBehaviour
         {
             healthpotion.Remove(healthpotion.Last());
             //increase the player health (set it either here or in the item script)
+            playerStats.Heal();
             if (healthpotion.Count == 0) currentPotionDisplayed = 2;
             UpdatePotionUI();
 
@@ -120,7 +130,6 @@ public class PlayerInven : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        Debug.Log("hit smth");
         Item item = other.GetComponent<Item>();
         if(item != null)
         {
