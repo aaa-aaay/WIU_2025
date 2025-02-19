@@ -14,10 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: Health
   description: Max Health ( + 5 )
-  upgradeType: 2
-  statChange: 0
+  upgradeType: 3
+  statChange: 5
   goldRequired: 0
   maxUnlocks: 5
-  currUnlocks: 0
-  isUnlocked: 0
   prevNodes: []

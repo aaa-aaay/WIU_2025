@@ -16,8 +16,7 @@ MonoBehaviour:
   description: Heals 30% of Max HP
   upgradeType: 6
   statChange: 30
+  goldRequired: 0
   maxUnlocks: 1
-  currUnlocks: 0
-  isUnlocked: 0
   prevNodes:
   - {fileID: 11400000, guid: efeb771a8a4b03147a196a5ade41b21d, type: 2}

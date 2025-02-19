@@ -18,6 +18,4 @@ MonoBehaviour:
   statChange: 3
   goldRequired: 0
   maxUnlocks: 5
-  currUnlocks: 0
-  isUnlocked: 0
   prevNodes: []

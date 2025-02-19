@@ -4,47 +4,34 @@ using TMPro;
 
 public class SkillTreeUI : MonoBehaviour
 {
-    public PlayerStats playerStats; 
+    public PlayerStats playerStats;
+    private PlayerSkillManager skillManager;
     public TextMeshProUGUI skillNameText;
     public TextMeshProUGUI skillDescriptionText;
     public TextMeshProUGUI maxcurrUnlocksText;
     public TextMeshProUGUI goldRequiredText;
     public Button unlockButton;
 
-    private SkillSO selectedSkill;
+    private void Start()
+    {
+        skillManager = FindObjectOfType<PlayerSkillManager>();
+    }
 
     public void ShowSkillInfo(SkillSO skill)
     {
-        selectedSkill = skill;  // stores selected skill
+        skillManager.SetSelectedSkill(skill); // set selected skill
+
+        // get skill info
+        int currUnlocks = skillManager.GetCurrentUnlockLevel(skill);
+        bool isUnlocked = skillManager.IsSkillUnlocked(skill);
 
         // update UI
         skillNameText.text = skill.skillName;
         skillDescriptionText.text = skill.description;
         goldRequiredText.text = $"Gold Required: {skill.goldRequired}";
-        maxcurrUnlocksText.text = $"Unlocks Left: {skill.maxUnlocks - skill.currUnlocks}";
+        maxcurrUnlocksText.text = $"Unlocks Left: {skill.maxUnlocks - currUnlocks}";
 
         // enable unlock button if it can be unlocked
-        unlockButton.interactable = skill.CanUnlock(playerStats);
-    }
-
-    public void TryUnlockSkill()
-    {
-        if (selectedSkill == null) return;
-
-        if (selectedSkill.CanUnlock(playerStats))
-        {
-            selectedSkill.isUnlocked = true;
-            selectedSkill.currUnlocks++;
-            playerStats.UseGold(selectedSkill);
-
-            Debug.Log($"{selectedSkill.skillName} has been unlocked!");
-
-            // refresh UI
-            ShowSkillInfo(selectedSkill);
-        }
-        else
-        {
-            Debug.Log("Cannot unlock this skill.");
-        }
+        unlockButton.interactable = skillManager.CanUnlockSkill();
     }
 }

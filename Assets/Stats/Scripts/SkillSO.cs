@@ -29,22 +29,22 @@ public class SkillSO : ScriptableObject
     [Header("Unlock System")]
     public int goldRequired;
     public int maxUnlocks;
-    public int currUnlocks;
-    public bool isUnlocked;
+    //public int currUnlocks;
+    //public bool isUnlocked;
 
     [Header("Previous Nodes")]
     public List<SkillSO> prevNodes; // list of all prev nodes
 
-    public bool CanUnlock(PlayerStats playerStats)
-    {
-        if (currUnlocks >= maxUnlocks || !playerStats.HasEnoughGold(goldRequired)) return false; // if max unlocked or not enough gold, return false and stay locked
+    //public bool CanUnlock(PlayerStats playerStats)
+    //{
+    //    if (currUnlocks >= maxUnlocks || !playerStats.HasEnoughGold(goldRequired)) return false; // if max unlocked or not enough gold, return false and stay locked
 
-        foreach (SkillSO skill in prevNodes)
-        {
-            if (!skill.isUnlocked) return false; // if previous nodes not unlocked, return false and stay locked
-        }
+    //    foreach (SkillSO skill in prevNodes)
+    //    {
+    //        if (!skill.isUnlocked) return false; // if previous nodes not unlocked, return false and stay locked
+    //    }
 
-        return true; // if node is unlockable
-    }
+    //    return true; // if node is unlockable
+    //}
 
 }

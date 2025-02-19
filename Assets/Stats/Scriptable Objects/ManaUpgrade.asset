@@ -14,12 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: Mana
   description: Max Mana ( + 5 )
-  upgradeType: 0
+  upgradeType: 4
   statChange: 5
   goldRequired: 0
   maxUnlocks: 5
-  currUnlocks: 0
-  isUnlocked: 0
   prevNodes:
   - {fileID: 11400000, guid: 5727216d15dfd30428ec5e2482075ea4, type: 2}
   - {fileID: 11400000, guid: 6ca436411eae91646b7a56aa804a500c, type: 2}

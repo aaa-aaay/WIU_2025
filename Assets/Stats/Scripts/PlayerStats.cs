@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerStats : MonoBehaviour
 {
     [SerializeField] private List<StatEntry> startStats = new List<StatEntry>(); // set stats in the inspector
-    private Dictionary<SkillSO.UpgradeType, int> stats = new Dictionary<SkillSO.UpgradeType, int>(); // store everyth in a dictionary
+    private Dictionary<SkillSO.UpgradeType, int> stats = new Dictionary<SkillSO.UpgradeType, int>(); // store the stats in a dictionary
     private bool unlockedHeal = false;
     private bool unlockedBarrier = false;
     private int healAmt;
@@ -77,6 +77,18 @@ public int MaxHealth => stats[SkillSO.UpgradeType.MaxHealth];
 
     }
 
+    public void UseGold(int amt)
+    {
+        if (Gold >= amt)
+        {
+            Gold -= amt;
+        }
+        else
+        {
+            Debug.Log("Player only has " + Gold);
+        }
+    }
+
     public void Barrier()
     {
         StartCoroutine(BarrierEffect()); // gain barrier for x duration
@@ -93,10 +105,10 @@ public int MaxHealth => stats[SkillSO.UpgradeType.MaxHealth];
     }
     public bool HasEnoughGold(int requiredGold)
     {
-        return Gold >= requiredGold;
+        return (Gold >= requiredGold);
     }
 
-    public void UseGold(SkillSO type)
+    public void UseGoldForSkills(SkillSO type)
     {
         Gold -= type.goldRequired;
     }
