@@ -11,6 +11,8 @@ public class SkillSO : ScriptableObject
         Speed,
         Defence,
         MaxHealth,
+        MaxMana,
+        Gold,
         Heal,
         Barrier
     }

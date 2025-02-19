@@ -4,70 +4,96 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
-    private int startStrength;
-    private int startSpeed;
-    private int startDefence;
-    private int startHealth;
+    [SerializeField] private List<StatEntry> startStats = new List<StatEntry>(); // set stats in the inspector
+    private Dictionary<SkillSO.UpgradeType, int> stats = new Dictionary<SkillSO.UpgradeType, int>(); // store everyth in a dictionary
+    private bool unlockedHeal = false;
+    private bool unlockedBarrier = false;
+    private int healAmt;
+    private int barrierAmt;
 
-    private int strength;
-    private int speed;
-    private int defence;
-    private int health;
-    private int healPercentage;
-    private int barrierPercentage;
-
-    private bool unlockedHeal;
-    private bool unlockedBarrier;
-
-    public int Strength => strength;
-    public int Speed => speed;
-    public int Defence => defence;
-    public int Health => health;
-    public int MaxHealth => startHealth;
+    public int Strength => stats[SkillSO.UpgradeType.Strength];
+    public int Speed => stats[SkillSO.UpgradeType.Speed];
+    public int Defence { get; private set; }
+    public int Health { get; private set; }
+    public int Mana { get; private set; }
+    public int Gold => stats[SkillSO.UpgradeType.Gold];
+    public int MaxHealth => stats[SkillSO.UpgradeType.MaxHealth];
+    public int MaxMana => stats[SkillSO.UpgradeType.MaxMana];
     public bool UnlockedHeal => unlockedHeal;
     public bool UnlockedBarrier => unlockedBarrier;
 
     private void Start()
     {
-        strength = startStrength;
-        speed = startSpeed;
-        defence = startDefence;
-        health = startHealth;
-        unlockedHeal = false;
-        unlockedBarrier = false;
+        // initialize variables with values set in inspector
+        foreach (var entry in startStats)
+        {
+            stats[entry.statType] = entry.value;
+        }
+        Health = MaxHealth;
     }
 
     public void UpgradeStat(SkillSO type)
     {
-        switch (type.upgradeType)
+        if (type.upgradeType == SkillSO.UpgradeType.Heal)
         {
-            case SkillSO.UpgradeType.Strength:
-                strength += type.statChange;
-                break;
-            case SkillSO.UpgradeType.Speed:
-                speed += type.statChange;
-                break;
-            case SkillSO.UpgradeType.Defence:
-                defence += type.statChange;
-                break;
-            case SkillSO.UpgradeType.MaxHealth:
-                startHealth += type.statChange;
-                health += type.statChange;
-                break;
-            case SkillSO.UpgradeType.Heal:
-                unlockedHeal = true;
-                break;
-            case SkillSO.UpgradeType.Barrier:
-                unlockedBarrier = true;
-                break;
+            unlockedHeal = true;
+            healAmt = Mathf.RoundToInt((Health / 100) * type.statChange);
+        }
+        else if (type.upgradeType == SkillSO.UpgradeType.Barrier)
+        {
+            unlockedBarrier = true;
+            barrierAmt = Mathf.RoundToInt((Defence / 100f) * type.statChange);
+        }
+        else if (stats.ContainsKey(type.upgradeType))
+        {
+            stats[type.upgradeType] += type.statChange;
+            if (type.upgradeType == SkillSO.UpgradeType.MaxHealth) // increase max health
+                Health += type.statChange; // increase current health
         }
     }
 
     public void TakeDamage(int amt)
     {
-        if (amt - defence > 0)
-        {
-            health = health - (amt - defence);
-        }
+        int damage = Mathf.Max(amt - Defence, 0); // ensure no negative dmg
+        Health = Mathf.Max(Health - damage, 0); // prevents negative health
     }
+
+    public void HealSkill()
+    {
+        Health += healAmt;
+        Health = Mathf.Min(Health, MaxHealth);
+    }
+
+    public void HealPotion(int amt)
+    {
+        Health += amt;
+        Health = Mathf.Min(Health, MaxHealth);
+    }
+
+    public void ManaPotion(int amt)
+    {
+        Mana += amt;
+        Mana = Mathf.Min(Mana, MaxMana);
+
+    }
+
+    public void Barrier()
+    {
+        StartCoroutine(BarrierEffect()); // gain barrier for x duration
+    }
+
+    private IEnumerator BarrierEffect()
+    {
+        int originalDefence = Defence; // store def
+        Defence += barrierAmt; // barrier
+
+        yield return new WaitForSeconds(3f); 
+
+        Defence = originalDefence; // reset def
+    }
+
+    //private int GetStat(SkillSO.UpgradeType statType)
+    //{
+    //    return stats.ContainsKey(statType) ? stats[statType] : 0;
+    //}
 }
