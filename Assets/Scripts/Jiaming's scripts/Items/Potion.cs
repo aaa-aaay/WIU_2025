@@ -6,7 +6,7 @@ using UnityEngine;
 public class Potion : Item
 {
 
-    private int potionStrength;
+    public int potionStrength;
     public PotionSO.PotionType type;
 
 

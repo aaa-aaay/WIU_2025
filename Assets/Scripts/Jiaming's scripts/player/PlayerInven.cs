@@ -108,7 +108,9 @@ public class PlayerInven : MonoBehaviour
         {
             healthpotion.Remove(healthpotion.Last());
             //increase the player health (set it either here or in the item script)
-            playerStats.Heal();
+            Debug.Log(playerStats.Health);
+            playerStats.HealPotion(healthpotion.First().potionStrength);
+            Debug.Log(playerStats.Health);
             if (healthpotion.Count == 0) currentPotionDisplayed = 2;
             UpdatePotionUI();
 
