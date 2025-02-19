@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54207cc925a9ad44785fb4cbacaed5dd, type: 3}
   m_Name: DefenceUpgrade
   m_EditorClassIdentifier: 
-  skillName: Defence Upgrade
+  skillName: Defence
   description: Max Defence ( + 1 )
   upgradeType: 0
   statChange: 1
+  goldRequired: 0
   maxUnlocks: 5
   currUnlocks: 0
   isUnlocked: 0

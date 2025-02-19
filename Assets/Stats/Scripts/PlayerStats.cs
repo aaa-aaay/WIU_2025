@@ -16,8 +16,8 @@ public class PlayerStats : MonoBehaviour
     public int Defence { get; private set; }
     public int Health { get; private set; }
     public int Mana { get; private set; }
-    public int Gold => stats[SkillSO.UpgradeType.Gold];
-    public int MaxHealth => stats[SkillSO.UpgradeType.MaxHealth];
+    public int Gold { get; private set; }
+public int MaxHealth => stats[SkillSO.UpgradeType.MaxHealth];
     public int MaxMana => stats[SkillSO.UpgradeType.MaxMana];
     public bool UnlockedHeal => unlockedHeal;
     public bool UnlockedBarrier => unlockedBarrier;
@@ -94,6 +94,11 @@ public class PlayerStats : MonoBehaviour
     public bool HasEnoughGold(int requiredGold)
     {
         return Gold >= requiredGold;
+    }
+
+    public void UseGold(SkillSO type)
+    {
+        Gold -= type.goldRequired;
     }
 
     //private int GetStat(SkillSO.UpgradeType statType)

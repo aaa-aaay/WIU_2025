@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54207cc925a9ad44785fb4cbacaed5dd, type: 3}
   m_Name: StrengthUpgrade
   m_EditorClassIdentifier: 
-  skillName: Strength Upgrade
+  skillName: Strength
   description: Max Strength ( + 3 )
   upgradeType: 0
   statChange: 3
+  goldRequired: 0
   maxUnlocks: 5
   currUnlocks: 0
   isUnlocked: 0
