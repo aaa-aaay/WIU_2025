@@ -15,6 +15,7 @@ MonoBehaviour:
   itemName: ManaPotion
   description: regens 20 MANA when consuming
   stackable: 1
-  UI_Image: {fileID: 0}
+  UI_Image: {fileID: 21300000, guid: 7894fd1b04c1dd244a1103b5b1d55772, type: 3}
+  price: 4
   regenvalue: 20
   potionType: 1

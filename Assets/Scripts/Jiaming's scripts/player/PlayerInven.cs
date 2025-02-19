@@ -90,45 +90,55 @@ public class PlayerInven : MonoBehaviour
 
         else if (currentPotionDisplayed == 0)
         {
-            if(healthpotion.Count > 0 || mamaPotion.Count > 0)
+            OnInventoryUpdated?.Invoke(null, 0);
+            if (healthpotion.Count > 0 || mamaPotion.Count > 0)
             {
                 if (healthpotion.Count > 0) currentPotionDisplayed = 1;
                 else if (mamaPotion.Count > 0) currentPotionDisplayed = 2;
                 UpdatePotionUI();
             }
 
-             
+
+
 
         }
     }
 
     private void UsePotion()
     {
-        if (currentPotionDisplayed == 1)
+        if (currentPotionDisplayed == 1 && healthpotion.Count > 0)
         {
-            healthpotion.Remove(healthpotion.Last());
-            //increase the player health (set it either here or in the item script)
-            Debug.Log(playerStats.Health);
-            playerStats.HealPotion(healthpotion.First().potionStrength);
-            Debug.Log(playerStats.Health);
-            if (healthpotion.Count == 0) currentPotionDisplayed = 2;
+            Potion usedPotion = healthpotion.Last();
+            healthpotion.Remove(usedPotion);
+            Destroy(usedPotion.gameObject);
+
+            // Switch to mana potions if no health potions are left
+            if (healthpotion.Count == 0 && mamaPotion.Count > 0)
+                currentPotionDisplayed = 2;
+            else if (healthpotion.Count == 0 && mamaPotion.Count == 0)
+                currentPotionDisplayed = 0; // No more potions
+
             UpdatePotionUI();
-
-
-            //use health potion
         }
-        else if (currentPotionDisplayed == 2)
+        else if (currentPotionDisplayed == 2 && mamaPotion.Count > 0)
         {
-            mamaPotion.Remove(mamaPotion.Last());
-            //increase the player mana (set it either here or in the item script)
-            if (mamaPotion.Count == 0) currentPotionDisplayed = 1;
+            Potion usedPotion = mamaPotion.Last();
+            mamaPotion.Remove(usedPotion);
+            Destroy(usedPotion.gameObject);
+
+            //playerStats.RestoreMana(usedPotion.potionStrength);
+  
+
+            // Switch to health potions if no mana potions are left
+            if (mamaPotion.Count == 0 && healthpotion.Count > 0)
+                currentPotionDisplayed = 1;
+            else if (mamaPotion.Count == 0 && healthpotion.Count == 0)
+                currentPotionDisplayed = 0; // No more potions
+
             UpdatePotionUI();
-
-
         }
-
-
     }
+
 
     private void OnTriggerStay(Collider other)
     {
@@ -164,7 +174,7 @@ public class PlayerInven : MonoBehaviour
                 }
 
                  
-                item.PickUp();
+                item.PickUp(gameObject);
                 pickUpPanel.SetActive(false);
                 StartCoroutine(ResetPickup());
 
@@ -181,5 +191,15 @@ public class PlayerInven : MonoBehaviour
     {
         yield return new WaitForSeconds(0.1f);
         isPickingUp = false;
+    }
+
+
+    public List<Item> GetPlayerInventory()
+    {
+        List<Item> allItems = new List<Item>();
+        allItems.AddRange(healthpotion);
+        allItems.AddRange(mamaPotion);
+        allItems.AddRange(weaponList);
+        return allItems;
     }
 }

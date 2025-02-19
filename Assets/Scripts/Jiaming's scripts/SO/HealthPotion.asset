@@ -15,4 +15,7 @@ MonoBehaviour:
   itemName: HealthPotion
   description: regens 50 HP when consuming
   stackable: 1
+  UI_Image: {fileID: 21300000, guid: 6d01cf3a664ff97458816013a12e06bc, type: 3}
+  price: 3
   regenvalue: 50
+  potionType: 0

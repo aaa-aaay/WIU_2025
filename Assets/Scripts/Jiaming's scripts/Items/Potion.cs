@@ -18,10 +18,6 @@ public class Potion : Item
             type = potion.potionType;
         }
     }
-    public override void PickUp() // maybe play a different sfx here or smth
-    {
-        Destroy(gameObject);
-    }
 
 
 

@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class Weapon : Item
 {
-    public override void PickUp()
-    {
-        Destroy(gameObject);
-    }
 
     // Start is called before the first frame update
     void Start()
