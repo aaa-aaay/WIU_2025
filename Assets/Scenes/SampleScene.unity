@@ -206,15 +206,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: fef57580cc8d757438d97c06fde207a0,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1640086367}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: fef57580cc8d757438d97c06fde207a0,
-        type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1640086372}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: fef57580cc8d757438d97c06fde207a0,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1640086373}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: fef57580cc8d757438d97c06fde207a0,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1640086376}
   m_SourcePrefab: {fileID: 100100000, guid: fef57580cc8d757438d97c06fde207a0, type: 3}
 --- !u!1 &330585543
 GameObject:
@@ -769,34 +769,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 262926318}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1640086367
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1640086366}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1091228cae1225f42bf0c2fd1b7b875e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cameraTarget: {fileID: 1471434247}
-  playerCamera: {fileID: 1471434250}
-  walkSpeed: 3
-  runSpeed: 6
-  dodgeDistance: 2
-  dodgeSpeed: 8
-  dodgeCooldown: 1
-  rollDistance: 2
-  rollSpeed: 8
-  rollCooldown: 1
-  rollCameraHeight: -2
-  playerTurnSpeed: 10
-  cameraSensitivity: 300
-  cameraRollEffectIntensity: 0.5
-  bobbingSpeed: 10
-  bobbingAmount: 0.15
 --- !u!4 &1640086370 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: fef57580cc8d757438d97c06fde207a0,
@@ -860,6 +832,34 @@ MonoBehaviour:
   m_DefaultActionMap: PlayerControls
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &1640086376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1640086366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1091228cae1225f42bf0c2fd1b7b875e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraTarget: {fileID: 1471434247}
+  playerCamera: {fileID: 1471434250}
+  walkSpeed: 3
+  runSpeed: 6
+  dodgeDistance: 2
+  dodgeSpeed: 8
+  dodgeCooldown: 1
+  rollDistance: 2
+  rollSpeed: 8
+  rollCooldown: 1
+  rollCameraHeight: -2
+  playerTurnSpeed: 10
+  cameraSensitivity: 300
+  cameraRollEffectIntensity: 0.5
+  bobbingSpeed: 10
+  bobbingAmount: 0.15
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
