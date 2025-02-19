@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerStats : MonoBehaviour
 {
     [SerializeField] private List<StatEntry> startStats = new List<StatEntry>(); // set stats in the inspector
-    private Dictionary<SkillSO.UpgradeType, int> stats = new Dictionary<SkillSO.UpgradeType, int>();
+    private Dictionary<SkillSO.UpgradeType, int> stats = new Dictionary<SkillSO.UpgradeType, int>(); // store everyth in a dictionary
     private bool unlockedHeal = false;
     private bool unlockedBarrier = false;
     private int healAmt;
@@ -15,9 +15,10 @@ public class PlayerStats : MonoBehaviour
     public int Speed => stats[SkillSO.UpgradeType.Speed];
     public int Defence { get; private set; }
     public int Health { get; private set; }
-    public int Mana => stats[SkillSO.UpgradeType.Mana];
+    public int Mana { get; private set; }
     public int Gold => stats[SkillSO.UpgradeType.Gold];
     public int MaxHealth => stats[SkillSO.UpgradeType.MaxHealth];
+    public int MaxMana => stats[SkillSO.UpgradeType.MaxMana];
     public bool UnlockedHeal => unlockedHeal;
     public bool UnlockedBarrier => unlockedBarrier;
 
@@ -57,9 +58,23 @@ public class PlayerStats : MonoBehaviour
         Health = Mathf.Max(Health - damage, 0); // prevents negative health
     }
 
-    public void Heal()
+    public void HealSkill()
     {
         Health += healAmt;
+        Health = Mathf.Min(Health, MaxHealth);
+    }
+
+    public void HealPotion(int amt)
+    {
+        Health += amt;
+        Health = Mathf.Min(Health, MaxHealth);
+    }
+
+    public void ManaPotion(int amt)
+    {
+        Mana += amt;
+        Mana = Mathf.Min(Mana, MaxMana);
+
     }
 
     public void Barrier()
