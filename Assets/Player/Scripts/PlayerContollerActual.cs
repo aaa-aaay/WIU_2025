@@ -242,7 +242,7 @@ public class PlayerController : MonoBehaviour
         // Example: Heal when pressing H
         if (Input.GetKeyDown(KeyCode.H) && _playerStats.UnlockedHeal)
         {
-            _playerStats.Heal();
+           // _playerStats.Heal();
         }
 
         // Example: Activate barrier when pressing B
