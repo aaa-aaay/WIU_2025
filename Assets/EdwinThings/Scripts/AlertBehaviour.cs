@@ -25,7 +25,7 @@ public class AlertBehaviour : StateMachineBehaviour
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        Debug.Log("DONE");
+        Debug.Log("DONE");  
         boss.resetAnimationBools();
         boss.setBossState(setState);
     }

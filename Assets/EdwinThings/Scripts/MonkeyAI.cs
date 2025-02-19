@@ -6,7 +6,7 @@ using UnityEngine;
 
 
 
-public class BossAI : MonoBehaviour
+public class MonkeyAI : MonoBehaviour
 {
     [SerializeField] Transform playerPos;
     private States currentState;
@@ -82,7 +82,7 @@ public class BossAI : MonoBehaviour
                 {
                     Debug.Log("State: Attack");
                     animator.SetBool("IsAttacking", true);
-                    whichAttack = UnityEngine.Random.Range(0, 4);
+                    whichAttack = UnityEngine.Random.Range(-1, 4);
                     Debug.Log(whichAttack);
                     animator.SetInteger("WhichAttack", whichAttack);
                 }
@@ -117,7 +117,6 @@ public class BossAI : MonoBehaviour
 
             default:
                 Debug.LogWarning("Unknown state encountered! / No state set");
-                Debug.Log(currentState);
                 break;
         }
     }
