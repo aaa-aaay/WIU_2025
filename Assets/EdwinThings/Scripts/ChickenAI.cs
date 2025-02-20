@@ -80,6 +80,9 @@ public class ChickenAI : MonoBehaviour
             case States.ATTACKING:
                 if (!animator.GetBool("IsAttacking"))
                 {
+
+                    direction = playerPos.position - transform.position;
+                    direction.y = 0;
                     Debug.Log("State: Attack");
                     animator.SetBool("IsAttacking", true);
                     whichAttack = UnityEngine.Random.Range(-1, 4);
