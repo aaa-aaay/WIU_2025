@@ -14,28 +14,27 @@ public class ShopSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     private string desc, itemName;
     private int price;
-    public event Action<string> BuyingItem;
+    public event Action<string, int> BuyingItem;
     private bool hovering = false;
 
 
-    private void Start()
+    private void Awake()
     {
-
         amountTxt = GetComponentsInChildren<TMP_Text>(true)
-            .FirstOrDefault(txt => txt.gameObject != gameObject);
+    .FirstOrDefault(txt => txt.gameObject != gameObject);
 
         image = GetComponentsInChildren<Image>(true)
             .FirstOrDefault(img => img.gameObject != gameObject);
 
         amountTxt.text = string.Empty;
         image.gameObject.SetActive(false);
-        //descriptionPanel.SetActive(false);
     }
+    
     private void Update()
     {
         if (Input.GetMouseButtonDown(0) && hovering)
         {
-            BuyingItem?.Invoke(itemName);
+            BuyingItem?.Invoke(itemName, price);
         }
 
     }
