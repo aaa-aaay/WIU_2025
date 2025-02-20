@@ -17,4 +17,13 @@ public class Weapon : Item
         }
 
     }
+
+    public void UseWeaponAttack()
+    {
+        //enable collier?
+    }
+    public void UseWeaponSkill()
+    {
+        //spawn the effect at a position at the player
+    }
 }

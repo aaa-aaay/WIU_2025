@@ -6,4 +6,8 @@ public class WeaponSO : ItemSO
 {
     public int damage;
     public int skillDamage;
+
+    public int healthRequiement;
+    public int speedRequirement;
+    public int defenseRequirement;
 }

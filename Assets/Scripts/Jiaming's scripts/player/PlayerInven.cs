@@ -5,6 +5,7 @@ using System.ComponentModel.Design.Serialization;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class PlayerInven : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class PlayerInven : MonoBehaviour
     private KeyCode tempKeyCode2 = KeyCode.Q;
     private KeyCode tempKeyCodeSwitchPotion = KeyCode.DownArrow;
     private KeyCode tempKeyCodeSwitchPotion2 = KeyCode.UpArrow;
+    private KeyCode tempKeyCode3 = KeyCode.LeftArrow;
+    private KeyCode tempKeyCode4 = KeyCode.RightArrow;
     [SerializeField] private SphereCollider pickupRange;
     [SerializeField] private GameObject pickUpPanel;
     [SerializeField] private PlayerStats playerStats;
@@ -24,12 +27,13 @@ public class PlayerInven : MonoBehaviour
     private int currentPotionDisplayed;
     private int currentWeaponDisplayed;
 
-    private Potion currentPotion;
     private Weapon currentWeapon;
+    private Potion currentPotion;
 
     private bool isPickingUp = false;
 
     public event Action<Sprite, int> OnInventoryUpdated;
+    public event Action<Sprite> OnWeaponUpdated;
 
     private void Start()
     {
@@ -40,6 +44,7 @@ public class PlayerInven : MonoBehaviour
 
     private void Update()
     {
+        //switch potions
         if(Input.GetKeyDown(tempKeyCodeSwitchPotion) || Input.GetKeyDown(tempKeyCodeSwitchPotion2))
         {
             if (currentPotionDisplayed == 1 && mamaPotion.Count > 0)
@@ -54,10 +59,39 @@ public class PlayerInven : MonoBehaviour
             UpdatePotionUI();
         }
 
+        //use potion
         if (Input.GetKeyDown(tempKeyCode2) && (healthpotion.Count > 0 || mamaPotion.Count > 0))
         {
             UsePotion();
         }
+
+        //Switch Weapon
+        if (Input.GetKeyDown(tempKeyCode3))
+        {
+            //go next weapon;
+            if (currentWeaponDisplayed > 0) {
+
+                currentWeaponDisplayed--;
+                currentWeapon = weaponList[currentWeaponDisplayed];
+                OnWeaponUpdated?.Invoke(currentWeapon.uiImage);
+            }
+
+                
+
+        }
+        if(Input.GetKeyDown(tempKeyCode4))
+        {
+            if (currentWeaponDisplayed < weaponList.Count - 1) {
+
+                currentWeaponDisplayed++;
+                currentWeapon = weaponList[currentWeaponDisplayed];
+                OnWeaponUpdated?.Invoke(currentWeapon.uiImage);
+
+            } 
+            //go previous weapon;
+        }
+
+
     }
 
 
@@ -198,5 +232,39 @@ public class PlayerInven : MonoBehaviour
         allItems.AddRange(mamaPotion);
         allItems.AddRange(weaponList);
         return allItems;
+    }
+    public void SetPlayerInventory(Item newItem, bool toAdd)
+    {
+        if (toAdd)
+        {
+            if (newItem is Potion potion)
+            {
+
+                if (potion.type == PotionSO.PotionType.HEALTH)
+                {
+                    healthpotion.Add(potion);
+                }
+                else if (potion.type == PotionSO.PotionType.MANA)
+                {
+                    mamaPotion.Add(potion);
+                }
+                UpdatePotionUI();
+            }
+
+
+            if (newItem is Weapon weapon)
+            {
+                weaponList.Add(weapon);
+                if(weaponList.Count == 1)
+                {
+                    currentWeapon = weapon;
+                    OnWeaponUpdated?.Invoke(currentWeapon.uiImage);
+                    currentWeaponDisplayed = 0;
+
+                }
+            }
+        }
+
+
     }
 }

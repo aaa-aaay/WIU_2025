@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using UnityEngine.EventSystems;
+using System;
+using Unity.VisualScripting;
 
 public class ShopSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -13,6 +15,8 @@ public class ShopSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     private string desc, itemName;
     private int price;
+    public event Action<string> BuyingItem;
+    private bool hovering = false;
 
 
     private void Start()
@@ -27,6 +31,14 @@ public class ShopSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         amountTxt.text = string.Empty;
         image.gameObject.SetActive(false);
         //descriptionPanel.SetActive(false);
+    }
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0) && hovering)
+        {
+            BuyingItem?.Invoke(itemName);
+        }
+
     }
 
     public void SetInfo(int amount, Sprite img, string name, string description, int price)
@@ -55,11 +67,14 @@ public class ShopSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         DescPanel descPanel = descriptionPanel.GetComponent<DescPanel>();
         descPanel.ChangeDescPanelInfo(itemName, desc, price);
         descriptionPanel.transform.position = transform.position;
+
+        hovering = true;
+
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-
+        hovering = false;
         descriptionPanel.SetActive(false);
     }
 }

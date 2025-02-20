@@ -11,16 +11,22 @@ public class Shop : MonoBehaviour
     [SerializeField] private List<ShopSlot> shopSlots;
     [SerializeField] private List<ShopSlot> playerSlot;
     [SerializeField] private List<Item> shopItems;
+    private PlayerInven player;
 
     private List<Item> items;
 
     private void Start()
     {
         shopCanvas.SetActive(false);
+
+        foreach (var shopSlot in shopSlots)
+        {
+            shopSlot.BuyingItem += ItemBought;
+        }
     }
     private void OnTriggerStay(Collider other)
     {
-        PlayerInven player = other.gameObject.GetComponentInChildren<PlayerInven>();
+         player = other.gameObject.GetComponentInChildren<PlayerInven>();
         if (player != null)
         {
             if (Input.GetKey(KeyCode.E))
@@ -43,6 +49,7 @@ public class Shop : MonoBehaviour
         if (player != null)
         {
             shopCanvas.SetActive(false);
+
         }
     }
 
@@ -104,6 +111,33 @@ public class Shop : MonoBehaviour
             );
         }
     }
+
+    private void ItemBought(string name)
+    {
+        for (int i = shopItems.Count - 1; i >= 0; i--)
+        {
+            Item item = shopItems[i];
+            if (item.itemName == name)
+            {
+                if (player != null)
+                {
+                    item.PickUp(player.gameObject);
+                    shopItems.RemoveAt(i);
+                    items.Add(item);
+                    DisplayShop();
+                    DisplayInventory();
+                    player.SetPlayerInventory(item,true);
+                    break;
+                }
+                else
+                {
+                    Debug.Log("player is null");
+                }
+            }
+        }
+    }
+
+
 
 }
 
