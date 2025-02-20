@@ -9,5 +9,6 @@ public class ItemSO : ScriptableObject
     public string description;
     public bool stackable;
     public Sprite UI_Image;
+    public int price = 10;
 
 }

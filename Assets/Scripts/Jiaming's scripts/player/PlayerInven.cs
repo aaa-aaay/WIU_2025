@@ -5,6 +5,7 @@ using System.ComponentModel.Design.Serialization;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class PlayerInven : MonoBehaviour
 {
@@ -13,23 +14,26 @@ public class PlayerInven : MonoBehaviour
     private KeyCode tempKeyCode2 = KeyCode.Q;
     private KeyCode tempKeyCodeSwitchPotion = KeyCode.DownArrow;
     private KeyCode tempKeyCodeSwitchPotion2 = KeyCode.UpArrow;
+    private KeyCode tempKeyCode3 = KeyCode.LeftArrow;
+    private KeyCode tempKeyCode4 = KeyCode.RightArrow;
     [SerializeField] private SphereCollider pickupRange;
     [SerializeField] private GameObject pickUpPanel;
     [SerializeField] private PlayerStats playerStats;
 
     private List<Potion> healthpotion = new List<Potion>();
     private List<Potion> mamaPotion = new List<Potion>();
-    private List<Weapon> weaponList = new List<Weapon>();
+    private List<Weapon> weaponList = new List<Weapon>();   
 
     private int currentPotionDisplayed;
     private int currentWeaponDisplayed;
 
+    public Weapon currentWeapon;
     private Potion currentPotion;
-    private Weapon currentWeapon;
 
     private bool isPickingUp = false;
 
     public event Action<Sprite, int> OnInventoryUpdated;
+    public event Action<Sprite> OnWeaponUpdated;
 
     private void Start()
     {
@@ -40,6 +44,7 @@ public class PlayerInven : MonoBehaviour
 
     private void Update()
     {
+        //switch potions
         if(Input.GetKeyDown(tempKeyCodeSwitchPotion) || Input.GetKeyDown(tempKeyCodeSwitchPotion2))
         {
             if (currentPotionDisplayed == 1 && mamaPotion.Count > 0)
@@ -54,10 +59,39 @@ public class PlayerInven : MonoBehaviour
             UpdatePotionUI();
         }
 
+        //use potion
         if (Input.GetKeyDown(tempKeyCode2) && (healthpotion.Count > 0 || mamaPotion.Count > 0))
         {
             UsePotion();
         }
+
+        //Switch Weapon
+        if (Input.GetKeyDown(tempKeyCode3))
+        {
+            //go next weapon;
+            if (currentWeaponDisplayed > 0) {
+
+                currentWeaponDisplayed--;
+                currentWeapon = weaponList[currentWeaponDisplayed];
+                OnWeaponUpdated?.Invoke(currentWeapon.uiImage);
+            }
+
+                
+
+        }
+        if(Input.GetKeyDown(tempKeyCode4))
+        {
+            if (currentWeaponDisplayed < weaponList.Count - 1) {
+
+                currentWeaponDisplayed++;
+                currentWeapon = weaponList[currentWeaponDisplayed];
+                OnWeaponUpdated?.Invoke(currentWeapon.uiImage);
+
+            } 
+            //go previous weapon;
+        }
+
+
     }
 
 
@@ -74,7 +108,7 @@ public class PlayerInven : MonoBehaviour
 
             OnInventoryUpdated?.Invoke(healthpotion.First().uiImage, healthpotion.Count);
             //update the ui with the new count;
-        }
+        }    
         else if (currentPotionDisplayed == 2)
         {
             if (mamaPotion.Count == 0)
@@ -90,45 +124,52 @@ public class PlayerInven : MonoBehaviour
 
         else if (currentPotionDisplayed == 0)
         {
-            if(healthpotion.Count > 0 || mamaPotion.Count > 0)
+            OnInventoryUpdated?.Invoke(null, 0);
+            if (healthpotion.Count > 0 || mamaPotion.Count > 0)
             {
                 if (healthpotion.Count > 0) currentPotionDisplayed = 1;
                 else if (mamaPotion.Count > 0) currentPotionDisplayed = 2;
                 UpdatePotionUI();
             }
 
-             
-
         }
     }
 
     private void UsePotion()
     {
-        if (currentPotionDisplayed == 1)
+        if (currentPotionDisplayed == 1 && healthpotion.Count > 0)
         {
-            healthpotion.Remove(healthpotion.Last());
-            //increase the player health (set it either here or in the item script)
-            Debug.Log(playerStats.Health);
-            playerStats.HealPotion(healthpotion.First().potionStrength);
-            Debug.Log(playerStats.Health);
-            if (healthpotion.Count == 0) currentPotionDisplayed = 2;
+            Potion usedPotion = healthpotion.Last();
+            healthpotion.Remove(usedPotion);
+            Destroy(usedPotion.gameObject);
+
+            // Switch to mana potions if no health potions are left
+            if (healthpotion.Count == 0 && mamaPotion.Count > 0)
+                currentPotionDisplayed = 2;
+            else if (healthpotion.Count == 0 && mamaPotion.Count == 0)
+                currentPotionDisplayed = 0; // No more potions
+
             UpdatePotionUI();
-
-
-            //use health potion
         }
-        else if (currentPotionDisplayed == 2)
+        else if (currentPotionDisplayed == 2 && mamaPotion.Count > 0)
         {
-            mamaPotion.Remove(mamaPotion.Last());
-            //increase the player mana (set it either here or in the item script)
-            if (mamaPotion.Count == 0) currentPotionDisplayed = 1;
+            Potion usedPotion = mamaPotion.Last();
+            mamaPotion.Remove(usedPotion);
+            Destroy(usedPotion.gameObject);
+
+            //playerStats.RestoreMana(usedPotion.potionStrength);
+  
+
+            // Switch to health potions if no mana potions are left
+            if (mamaPotion.Count == 0 && healthpotion.Count > 0)
+                currentPotionDisplayed = 1;
+            else if (mamaPotion.Count == 0 && healthpotion.Count == 0)
+                currentPotionDisplayed = 0; // No more potions
+
             UpdatePotionUI();
-
-
         }
-
-
     }
+
 
     private void OnTriggerStay(Collider other)
     {
@@ -164,7 +205,7 @@ public class PlayerInven : MonoBehaviour
                 }
 
                  
-                item.PickUp();
+                item.PickUp(gameObject);
                 pickUpPanel.SetActive(false);
                 StartCoroutine(ResetPickup());
 
@@ -181,5 +222,49 @@ public class PlayerInven : MonoBehaviour
     {
         yield return new WaitForSeconds(0.1f);
         isPickingUp = false;
+    }
+
+
+    public List<Item> GetPlayerInventory()
+    {
+        List<Item> allItems = new List<Item>();
+        allItems.AddRange(healthpotion);
+        allItems.AddRange(mamaPotion);
+        allItems.AddRange(weaponList);
+        return allItems;
+    }
+    public void SetPlayerInventory(Item newItem, bool toAdd)
+    {
+        if (toAdd)
+        {
+            if (newItem is Potion potion)
+            {
+
+                if (potion.type == PotionSO.PotionType.HEALTH)
+                {
+                    healthpotion.Add(potion);
+                }
+                else if (potion.type == PotionSO.PotionType.MANA)
+                {
+                    mamaPotion.Add(potion);
+                }
+                UpdatePotionUI();
+            }
+
+
+            if (newItem is Weapon weapon)
+            {
+                weaponList.Add(weapon);
+                if(weaponList.Count == 1)
+                {
+                    currentWeapon = weapon;
+                    OnWeaponUpdated?.Invoke(currentWeapon.uiImage);
+                    currentWeaponDisplayed = 0;
+
+                }
+            }
+        }
+
+
     }
 }

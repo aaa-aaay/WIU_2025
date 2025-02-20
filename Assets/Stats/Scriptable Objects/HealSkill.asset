@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54207cc925a9ad44785fb4cbacaed5dd, type: 3}
   m_Name: HealSkill
   m_EditorClassIdentifier: 
-  skillName: Unlock Heal
+  skillName: Heal
   description: Heals 30% of Max HP
-  upgradeType: 3
-  statChange: 0
+  upgradeType: 6
+  statChange: 30
+  goldRequired: 0
+  maxUnlocks: 1
+  prevNodes:
+  - {fileID: 11400000, guid: efeb771a8a4b03147a196a5ade41b21d, type: 2}

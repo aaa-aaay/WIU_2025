@@ -1,35 +1,109 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Combat : MonoBehaviour
 {
-    private Animator anim;
-    public float cooldownTime;
-    private float nextFireTime = 0.0f;
-    public static int noOfClicks;
-    float lastClickedTime;
-    float maxComboDelay;
+    [SerializeField]
+    private Animator playerAnim;
 
-    void Start()
-    {
-        anim = GetComponent<Animator>();        
-    }
+    [SerializeField]
+    private GameObject sword;
+    [SerializeField]
+    private GameObject HipSword;
+    [SerializeField]
+    private GameObject Sword;
+    private bool isEquipped = false;  
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public bool isAttacking;
+    public float timeSinceAttack;
+    public int currentAttack = 0;
 
-    void OnClick()
+
+
+    private void Update()
     {
-        lastClickedTime = Time.time;
-        noOfClicks++;   
-        if (noOfClicks == 1)
+        timeSinceAttack += Time.deltaTime;
+        Attack();
+        if (Input.GetKeyDown(KeyCode.R))
         {
+            ToggleWeapon();
+        }
+        Attack();
+    }
 
+    private void ToggleWeapon()
+    {
+        // Toggle the equipped state
+        isEquipped = !isEquipped;
+
+        if (isEquipped)
+        {
+            Debug.Log("Equipping weapon");
+            playerAnim.ResetTrigger("sheathWeapon");
+            playerAnim.SetTrigger("equip");
+        }
+        else
+        {
+            Debug.Log("Sheathing weapon");
+            playerAnim.ResetTrigger("equip");
+            playerAnim.SetTrigger("sheathWeapon");
         }
     }
+
+    public void ActivateWeapon()
+    {
+        sword.SetActive(true);
+        HipSword.SetActive(false);
+        Debug.Log("Weapon activated");
+    }
+
+    public void DeactivateWeapon()
+    {
+        sword.SetActive(false);
+        HipSword.SetActive(true);
+        Debug.Log("Weapon deactivated");
+    }
+
+    public void Attack()
+    {
+
+        if (Input.GetMouseButton(0) && timeSinceAttack > 0.8f)
+        {
+            if (!isEquipped)
+                return;
+
+            currentAttack++;
+            isAttacking = true;
+
+            if (currentAttack > 3)
+                currentAttack = 1;
+
+            //reset
+            if (timeSinceAttack > 1.0f)
+                currentAttack = 1;
+
+            //call anim
+            playerAnim.SetTrigger("attack" + currentAttack);
+
+            timeSinceAttack = 0;
+
+        }
+        
+    }
+    public void StartDealDamage()
+    {
+        Sword.GetComponentInChildren<DamageDealer>().StartDealDamage();
+    }
+
+    public void EndDealDamage()
+    {
+        Sword.GetComponentInChildren<DamageDealer>().EndDealDamage();
+    }
+
+    public void ResetAttack()
+    {
+        isAttacking = false;
+    }
+
 }

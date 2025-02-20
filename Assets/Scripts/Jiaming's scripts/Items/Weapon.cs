@@ -4,20 +4,34 @@ using UnityEngine;
 
 public class Weapon : Item
 {
-    public override void PickUp()
+    [HideInInspector]public float damage; 
+    [HideInInspector]public float skillDamage;
+    [HideInInspector] private GameObject skillprefab;
+    [HideInInspector] private Vector3 spawnOffset;
+    private void Start()
     {
-        Destroy(gameObject);
+        base.Start();
+
+        if (itemSo is WeaponSO weapon) 
+        {
+            damage = weapon.damage;
+            skillDamage = weapon.skillDamage;
+            skillprefab = weapon.MagicEffect;
+            spawnOffset = weapon.magicSpawnOffset;
+        }
+
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public void UseWeaponAttack()
     {
-        
+        //enable collier?
     }
-
-    // Update is called once per frame
-    void Update()
+    public void UseWeaponSkill()
     {
-        
+        if(skillprefab != null) {
+            Instantiate(skillprefab, transform.position - spawnOffset, Quaternion.identity);
+        }
+
+        //spawn the effect at a position at the player
     }
 }

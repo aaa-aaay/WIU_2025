@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73b2ff030efa25b43a6aa5cf7821013b, type: 3}
+  m_Name: Reaper
+  m_EditorClassIdentifier: 
+  itemName: Death Reaper
+  description: This weapon shots a deadly slash attack
+  stackable: 0
+  UI_Image: {fileID: 21300000, guid: 23e3af35fe8ae034c822aff3cd78d589, type: 3}
+  price: 30
+  damage: 30
+  skillDamage: 50
+  healthRequiement: 20
+  speedRequirement: 40
+  defenseRequirement: 40
+  MagicEffect: {fileID: 1343360775990789499, guid: d31baa0165737cf45a9b927c2c0c243a,
+    type: 3}
+  magicSpawnOffset: {x: 0, y: 1, z: 0}

@@ -8,11 +8,11 @@ public class InvenUIManager : MonoBehaviour
 {
     [SerializeField] private PlayerInven playerIven;
     [SerializeField] GameObject potionPanel;
-    [SerializeField] GameObject WeaponPanel;
+    [SerializeField] GameObject weaponPanel;
 
     private TMP_Text potionCount;
     private Image potionImage;
-    private Image WeaponImage;
+    private Image weaponImage;
 
     private void Start()
     {
@@ -21,14 +21,15 @@ public class InvenUIManager : MonoBehaviour
         potionImage = potionPanel.GetComponentsInChildren<Image>(true)
                          .FirstOrDefault(img => img.gameObject != potionPanel);
 
-        WeaponImage = WeaponPanel.GetComponentsInChildren<Image>(true)
-                 .FirstOrDefault(img => img.gameObject != WeaponPanel);
+        weaponImage = weaponPanel.GetComponentsInChildren<Image>(true)
+                 .FirstOrDefault(img => img.gameObject != weaponPanel);
 
 
         potionPanel.SetActive(false);
-        WeaponPanel.SetActive(false);
+        weaponPanel.SetActive(false);
 
         playerIven.OnInventoryUpdated += UpdatePotionUI;
+        playerIven.OnWeaponUpdated += UpdateWeaponUI;
 
     }
 
@@ -44,5 +45,15 @@ public class InvenUIManager : MonoBehaviour
         potionImage.sprite = img;
         potionCount.text = count.ToString();
 
+    }
+    private void UpdateWeaponUI(Sprite img = null)
+    {
+        if(img == null)
+        {
+            weaponPanel.SetActive(false);
+            return;
+        }
+        weaponPanel.SetActive(true);
+        weaponImage.sprite = img;
     }
 }

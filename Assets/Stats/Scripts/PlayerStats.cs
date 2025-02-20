@@ -5,7 +5,8 @@ using UnityEngine;
 public class PlayerStats : MonoBehaviour
 {
     [SerializeField] private List<StatEntry> startStats = new List<StatEntry>(); // set stats in the inspector
-    private Dictionary<SkillSO.UpgradeType, int> stats = new Dictionary<SkillSO.UpgradeType, int>(); // store everyth in a dictionary
+    private Dictionary<SkillSO.UpgradeType, int> stats = new Dictionary<SkillSO.UpgradeType, int>(); // store the stats in a dictionary
+    private StatBars statBar;
     private bool unlockedHeal = false;
     private bool unlockedBarrier = false;
     private int healAmt;
@@ -16,13 +17,13 @@ public class PlayerStats : MonoBehaviour
     public int Defence { get; private set; }
     public int Health { get; private set; }
     public int Mana { get; private set; }
-    public int Gold => stats[SkillSO.UpgradeType.Gold];
+    public int Gold { get; private set; }
     public int MaxHealth => stats[SkillSO.UpgradeType.MaxHealth];
     public int MaxMana => stats[SkillSO.UpgradeType.MaxMana];
     public bool UnlockedHeal => unlockedHeal;
     public bool UnlockedBarrier => unlockedBarrier;
 
-    private void Start()
+    private void Awake()
     {
         // initialize variables with values set in inspector
         foreach (var entry in startStats)
@@ -30,8 +31,13 @@ public class PlayerStats : MonoBehaviour
             stats[entry.statType] = entry.value;
         }
         Health = MaxHealth;
+        Mana = MaxMana;
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P)) { TakeDamage(10); }
+    }
     public void UpgradeStat(SkillSO type)
     {
         if (type.upgradeType == SkillSO.UpgradeType.Heal)
@@ -77,6 +83,18 @@ public class PlayerStats : MonoBehaviour
 
     }
 
+    public void UseGold(int amt)
+    {
+        if (Gold >= amt)
+        {
+            Gold -= amt;
+        }
+        else
+        {
+            Debug.Log("Player only has " + Gold);
+        }
+    }
+
     public void Barrier()
     {
         StartCoroutine(BarrierEffect()); // gain barrier for x duration
@@ -91,9 +109,13 @@ public class PlayerStats : MonoBehaviour
 
         Defence = originalDefence; // reset def
     }
+    public bool HasEnoughGold(int requiredGold)
+    {
+        return (Gold >= requiredGold);
+    }
 
-    //private int GetStat(SkillSO.UpgradeType statType)
-    //{
-    //    return stats.ContainsKey(statType) ? stats[statType] : 0;
-    //}
+    public void UseGoldForSkills(SkillSO type)
+    {
+        Gold -= type.goldRequired;
+    }
 }

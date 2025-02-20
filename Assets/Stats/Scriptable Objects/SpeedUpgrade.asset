@@ -9,10 +9,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe0a2d6d041e5b2449a71e27ef60bb8b, type: 3}
+  m_Script: {fileID: 11500000, guid: 54207cc925a9ad44785fb4cbacaed5dd, type: 3}
   m_Name: SpeedUpgrade
   m_EditorClassIdentifier: 
-  skillName: 
-  description: 
-  upgradeType: 0
-  statChange: 0
+  skillName: Speed
+  description: Max Speed ( + 1 )
+  upgradeType: 1
+  statChange: 1
+  goldRequired: 0
+  maxUnlocks: 5
+  currUnlocks: 0
+  isUnlocked: 0
+  prevNodes:
+  - {fileID: 11400000, guid: 6ca436411eae91646b7a56aa804a500c, type: 2}
+  - {fileID: 11400000, guid: af916329c8f76df47882ea104f4c5191, type: 2}
