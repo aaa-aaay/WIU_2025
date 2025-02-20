@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerSkillManager : MonoBehaviour
 {
     private PlayerStats playerStats;
     private SkillTreeUI skillTreeUI;
     private SkillSO selectedSkill;
+    private Image skillIcon;
 
     private Dictionary<SkillSO, int> unlockedSkills = new Dictionary<SkillSO, int>(); // tracks the upgrade level (currUnlocks)
     private Dictionary<SkillSO, bool> unlockedStatus = new Dictionary<SkillSO, bool>(); // tracks if skill is unlocked
@@ -16,6 +18,7 @@ public class PlayerSkillManager : MonoBehaviour
     {
         playerStats = FindObjectOfType<PlayerStats>();
         skillTreeUI = FindObjectOfType<SkillTreeUI>();
+        skillIcon = GetComponent<Image>();
         InitializeSkills();
     }
 
