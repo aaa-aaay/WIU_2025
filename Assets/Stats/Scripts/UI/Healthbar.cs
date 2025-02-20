@@ -7,17 +7,30 @@ public class StatBars : MonoBehaviour
     public Slider manaSlider;
     public PlayerStats playerStats;
 
+    private int lastHealth;
+    private int lastMana;
+
     void Start()
     {
         healthSlider.maxValue = playerStats.MaxHealth;
-        healthSlider.value = playerStats.Health; 
         manaSlider.maxValue = playerStats.MaxMana;
-        healthSlider.value = playerStats.Mana;
+
+        UpdateStats();
+    }
+
+    void Update()
+    {
+        if (playerStats.Health != lastHealth || playerStats.Mana != lastMana)
+        {
+            UpdateStats();
+        }
     }
 
     public void UpdateStats()
     {
-        healthSlider.value = playerStats.Health;
-        healthSlider.value = playerStats.Mana;
+        lastHealth = playerStats.Health;
+        lastMana = playerStats.Mana;
+        healthSlider.value = lastHealth;
+        manaSlider.value = lastMana;
     }
 }

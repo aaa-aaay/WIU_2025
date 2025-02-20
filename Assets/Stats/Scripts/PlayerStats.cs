@@ -6,6 +6,7 @@ public class PlayerStats : MonoBehaviour
 {
     [SerializeField] private List<StatEntry> startStats = new List<StatEntry>(); // set stats in the inspector
     private Dictionary<SkillSO.UpgradeType, int> stats = new Dictionary<SkillSO.UpgradeType, int>(); // store the stats in a dictionary
+    private StatBars statBar;
     private bool unlockedHeal = false;
     private bool unlockedBarrier = false;
     private int healAmt;
@@ -22,7 +23,7 @@ public class PlayerStats : MonoBehaviour
     public bool UnlockedHeal => unlockedHeal;
     public bool UnlockedBarrier => unlockedBarrier;
 
-    private void Start()
+    private void Awake()
     {
         // initialize variables with values set in inspector
         foreach (var entry in startStats)
@@ -30,6 +31,7 @@ public class PlayerStats : MonoBehaviour
             stats[entry.statType] = entry.value;
         }
         Health = MaxHealth;
+        Mana = MaxMana;
     }
 
     public void UpgradeStat(SkillSO type)
@@ -112,9 +114,4 @@ public class PlayerStats : MonoBehaviour
     {
         Gold -= type.goldRequired;
     }
-
-    //private int GetStat(SkillSO.UpgradeType statType)
-    //{
-    //    return stats.ContainsKey(statType) ? stats[statType] : 0;
-    //}
 }
