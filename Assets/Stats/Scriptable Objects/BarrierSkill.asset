@@ -10,13 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 54207cc925a9ad44785fb4cbacaed5dd, type: 3}
-  m_Name: HealSkill
+  m_Name: BarrierSkill
   m_EditorClassIdentifier: 
-  skillName: Heal
-  description: Heals 30% of Max HP
-  upgradeType: 6
-  statChange: 30
-  goldRequired: 0
+  skillName: Barrier
+  description: Grants 50% of current Defence for 3 seconds
+  upgradeType: 7
+  statChange: 50
   maxUnlocks: 1
+  currUnlocks: 0
+  isUnlocked: 0
   prevNodes:
-  - {fileID: 11400000, guid: efeb771a8a4b03147a196a5ade41b21d, type: 2}
+  - {fileID: 11400000, guid: af639237b7546be44b6d8300eee2a38c, type: 2}

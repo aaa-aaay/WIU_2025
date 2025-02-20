@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54207cc925a9ad44785fb4cbacaed5dd, type: 3}
   m_Name: HealthUpgrade
   m_EditorClassIdentifier: 
-  skillName: Health Upgrade
+  skillName: Health
   description: Max Health ( + 5 )
-  upgradeType: 2
-  statIncrease: 5
+  upgradeType: 3
+  statChange: 5
+  goldRequired: 0
+  maxUnlocks: 5
+  prevNodes: []
