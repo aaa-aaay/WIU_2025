@@ -1,16 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerStats : MonoBehaviour
 {
     [SerializeField] private List<StatEntry> startStats = new List<StatEntry>(); // set stats in the inspector
     private Dictionary<SkillSO.UpgradeType, int> stats = new Dictionary<SkillSO.UpgradeType, int>(); // store the stats in a dictionary
-    private StatBars statBar;
+
+    PlayerSkillManager playerSkillManager;
     private bool unlockedHeal = false;
     private bool unlockedBarrier = false;
     private int healAmt;
     private int barrierAmt;
+
+    [Header ("Cooldowns")]
+    // cd timer
+    [SerializeField] private float healCd = 30f;
+    [SerializeField] private float barrierCd = 30f;
+
+    [SerializeField] private Image healCdImage; 
+    [SerializeField] private Image barrierCdImage; 
+
+    private float healCdRemaining = 0f;
+    private float barrierCdRemaining = 0f;
 
     public int Strength => stats[SkillSO.UpgradeType.Strength];
     public int Speed => stats[SkillSO.UpgradeType.Speed];
@@ -20,11 +33,11 @@ public class PlayerStats : MonoBehaviour
     public int Gold { get; private set; }
     public int MaxHealth => stats[SkillSO.UpgradeType.MaxHealth];
     public int MaxMana => stats[SkillSO.UpgradeType.MaxMana];
-    public bool UnlockedHeal => unlockedHeal;
-    public bool UnlockedBarrier => unlockedBarrier;
 
     private void Awake()
     {
+        playerSkillManager = GetComponent<PlayerSkillManager>();
+
         // initialize variables with values set in inspector
         foreach (var entry in startStats)
         {
@@ -36,18 +49,34 @@ public class PlayerStats : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P)) { TakeDamage(10); }
+        if (Input.GetKeyDown(KeyCode.P)) { TakeDamage(10); } // for testing
+        if (Input.GetKeyDown(KeyCode.I)) { BarrierSkill(); }
+        if (Input.GetKeyDown(KeyCode.O)) { HealSkill(); }
+
+        if (healCdRemaining > 0)
+        {
+            healCdRemaining -= Time.deltaTime;
+            healCdImage.fillAmount = healCdRemaining / healCd; // % of cd left
+        }
+        if (barrierCdRemaining > 0)
+        {
+            barrierCdRemaining -= Time.deltaTime;
+            barrierCdImage.fillAmount = barrierCdRemaining / barrierCd; // % of cd left
+        }
     }
+
     public void UpgradeStat(SkillSO type)
     {
         if (type.upgradeType == SkillSO.UpgradeType.Heal)
         {
             unlockedHeal = true;
+            healCdImage.fillAmount = healCdRemaining / healCd;
             healAmt = Mathf.RoundToInt((Health / 100) * type.statChange);
         }
         else if (type.upgradeType == SkillSO.UpgradeType.Barrier)
         {
             unlockedBarrier = true;
+            barrierCdImage.fillAmount = barrierCdRemaining / barrierCd;
             barrierAmt = Mathf.RoundToInt((Defence / 100f) * type.statChange);
         }
         else if (stats.ContainsKey(type.upgradeType))
@@ -62,12 +91,6 @@ public class PlayerStats : MonoBehaviour
     {
         int damage = Mathf.Max(amt - Defence, 0); // ensure no negative dmg
         Health = Mathf.Max(Health - damage, 0); // prevents negative health
-    }
-
-    public void HealSkill()
-    {
-        Health += healAmt;
-        Health = Mathf.Min(Health, MaxHealth);
     }
 
     public void HealPotion(int amt)
@@ -95,9 +118,39 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
-    public void Barrier()
+    public void HealSkill()
     {
-        StartCoroutine(BarrierEffect()); // gain barrier for x duration
+        if (unlockedHeal)
+        {
+            if (healCdRemaining <= 0)
+            {
+                Health += healAmt;
+                Health = Mathf.Min(Health, MaxHealth);
+                healCdRemaining = healCd; // reset cd
+
+                Debug.Log("Heal skill used");
+            }
+        }
+        else
+        {
+            Debug.Log("Heal has not been unlocked yet");
+        }
+    }
+
+    public void BarrierSkill()
+    {
+        if (unlockedBarrier)
+        {
+            if (barrierCdRemaining <= 0)
+            {
+                StartCoroutine(BarrierEffect()); // gain barrier for x duration
+                barrierCdRemaining = barrierCd; // reset cd
+            }
+        }
+        else
+        {
+            Debug.Log("Barrier has not been unlocked yet");
+        }
     }
 
     private IEnumerator BarrierEffect()
