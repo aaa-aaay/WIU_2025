@@ -34,6 +34,10 @@ public class PlayerStats : MonoBehaviour
         Mana = MaxMana;
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P)) { TakeDamage(10); }
+    }
     public void UpgradeStat(SkillSO type)
     {
         if (type.upgradeType == SkillSO.UpgradeType.Heal)

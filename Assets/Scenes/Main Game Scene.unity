@@ -1472,6 +1472,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerInven: {fileID: 1800696389}
+--- !u!114 &711084023 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2754311542265347768, guid: aaa1d47768f7d8749a6cad8c9290e0eb,
+    type: 3}
+  m_PrefabInstance: {fileID: 711084012}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 711084018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 160d95fae39a20e428bd03edcd8a7090, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &737401687 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3464503579852773095, guid: a6e9999cbc45c9941b579b9cbd524020,
@@ -1486,6 +1498,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 149555138274951914, guid: a6e9999cbc45c9941b579b9cbd524020,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 714820923335272101, guid: a6e9999cbc45c9941b579b9cbd524020,
         type: 3}
       propertyPath: m_Pivot.x
@@ -1586,10 +1603,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 945534627949736839, guid: a6e9999cbc45c9941b579b9cbd524020,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1983967147069268994, guid: a6e9999cbc45c9941b579b9cbd524020,
         type: 3}
       propertyPath: m_Name
       value: Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300822703027801598, guid: a6e9999cbc45c9941b579b9cbd524020,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3817639314790647997, guid: a6e9999cbc45c9941b579b9cbd524020,
         type: 3}
@@ -1597,6 +1624,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5020513460481271698, guid: a6e9999cbc45c9941b579b9cbd524020,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6787814075400692665, guid: a6e9999cbc45c9941b579b9cbd524020,
+        type: 3}
+      propertyPath: playerStats
+      value: 
+      objectReference: {fileID: 711084023}
+    - target: {fileID: 8196828324836457061, guid: a6e9999cbc45c9941b579b9cbd524020,
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
