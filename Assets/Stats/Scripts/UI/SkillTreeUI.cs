@@ -12,8 +12,6 @@ public class SkillTreeUI : MonoBehaviour
     public TextMeshProUGUI goldRequiredText;
     public Button unlockButton;
 
-    private Image skillImage;
-
     private void Start()
     {
         skillManager = FindObjectOfType<PlayerSkillManager>();
@@ -35,10 +33,5 @@ public class SkillTreeUI : MonoBehaviour
 
         // enable unlock button if it can be unlocked
         unlockButton.interactable = skillManager.CanUnlockSkill();
-    }
-
-    public void GreyImage(Image icon)
-    {
-        icon.color = new Color(0.5f, 0.5f, 0.5f, 1f);
     }
 }

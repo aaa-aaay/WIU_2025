@@ -7,7 +7,7 @@ public class PlayerSkillManager : MonoBehaviour
     private PlayerStats playerStats;
     private SkillTreeUI skillTreeUI;
     private SkillSO selectedSkill;
-    private Image skillIcon;
+    private SkillButton selectedButton;
 
     private Dictionary<SkillSO, int> unlockedSkills = new Dictionary<SkillSO, int>(); // tracks the upgrade level (currUnlocks)
     private Dictionary<SkillSO, bool> unlockedStatus = new Dictionary<SkillSO, bool>(); // tracks if skill is unlocked
@@ -18,15 +18,29 @@ public class PlayerSkillManager : MonoBehaviour
     {
         playerStats = FindObjectOfType<PlayerStats>();
         skillTreeUI = FindObjectOfType<SkillTreeUI>();
-        skillIcon = GetComponent<Image>();
+
+        if (availableSkills == null || availableSkills.Count == 0)
+        {
+            Debug.LogError("availableSkills list is null or empty!");
+            return;
+        }
+
         InitializeSkills();
     }
 
     private void InitializeSkills()
     {
+
         foreach (var skill in availableSkills)
         {
+            if (skill == null)
+            {
+                Debug.LogError("Null skill detected in availableSkills!");
+                continue;
+            }
+
             unlockedSkills[skill] = 0;  // initialize skills with no upgrades
+            unlockedStatus[skill] = false;
             if (skill.upgradeType == SkillSO.UpgradeType.Defence || skill.upgradeType == SkillSO.UpgradeType.MaxHealth || skill.upgradeType == SkillSO.UpgradeType.Strength)
             {
                 unlockedStatus[skill] = true; // always start first nodes unlocked
@@ -35,8 +49,9 @@ public class PlayerSkillManager : MonoBehaviour
             {
                 unlockedStatus[skill] = false; // start as locked
             }
-            
+
         }
+        RefreshSkillGreying();
     }
 
     public void TryUnlockSkill()
@@ -60,6 +75,8 @@ public class PlayerSkillManager : MonoBehaviour
         {
             Debug.Log("Skill cannot be unlocked.");
         }
+
+        RefreshSkillGreying();
     }
 
     public bool CanUnlockSkill()
@@ -110,5 +127,31 @@ public class PlayerSkillManager : MonoBehaviour
     public bool IsSkillUnlocked(SkillSO skill)
     {
         return unlockedStatus.ContainsKey(skill) && unlockedStatus[skill];
+    }
+
+    private void RefreshSkillGreying()
+    {
+        foreach (var skill in availableSkills)
+        {
+            selectedSkill = skill;
+            selectedButton = FindSkillButton(selectedSkill);
+            if (selectedButton != null)
+            {
+                selectedButton.UpdateSkillUI(CanUnlockSkill());
+            }
+        }
+    }
+
+    private SkillButton FindSkillButton(SkillSO skill)
+    {
+        SkillButton[] allSkillButtons = FindObjectsOfType<SkillButton>();
+        foreach (var button in allSkillButtons)
+        {
+            if (button.skill == skill) // Match the SkillSO
+            {
+                return button;
+            }
+        }
+        return null;
     }
 }
