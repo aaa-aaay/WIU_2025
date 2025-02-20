@@ -17,7 +17,7 @@ public class PlayerStats : MonoBehaviour
     public int Health { get; private set; }
     public int Mana { get; private set; }
     public int Gold { get; private set; }
-public int MaxHealth => stats[SkillSO.UpgradeType.MaxHealth];
+    public int MaxHealth => stats[SkillSO.UpgradeType.MaxHealth];
     public int MaxMana => stats[SkillSO.UpgradeType.MaxMana];
     public bool UnlockedHeal => unlockedHeal;
     public bool UnlockedBarrier => unlockedBarrier;
