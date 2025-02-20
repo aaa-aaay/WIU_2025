@@ -17,7 +17,7 @@ public class PlayerInven : MonoBehaviour
     private KeyCode tempKeyCode3 = KeyCode.LeftArrow;
     private KeyCode tempKeyCode4 = KeyCode.RightArrow;
     [SerializeField] private SphereCollider pickupRange;
-    [SerializeField] private GameObject pickUpPanel;
+    //[SerializeField] private GameObject pickUpPanel;
     [SerializeField] private PlayerStats playerStats;
 
     private List<Potion> healthpotion = new List<Potion>();
@@ -38,7 +38,7 @@ public class PlayerInven : MonoBehaviour
     private void Start()
     {
         currentPotionDisplayed = 0;
-        pickUpPanel.SetActive(false);
+       // pickUpPanel.SetActive(false);
 
     }
 
@@ -176,7 +176,7 @@ public class PlayerInven : MonoBehaviour
         Item item = other.GetComponent<Item>();
         if(item != null)
         {
-            pickUpPanel.SetActive(true);
+           // pickUpPanel.SetActive(true);
             //TODO: Show the Pick UI
             if (Input.GetKey(tempKeyCode) && !isPickingUp  )
             {
@@ -206,7 +206,7 @@ public class PlayerInven : MonoBehaviour
 
                  
                 item.PickUp(gameObject);
-                pickUpPanel.SetActive(false);
+               // pickUpPanel.SetActive(false);
                 StartCoroutine(ResetPickup());
 
             }
@@ -215,7 +215,7 @@ public class PlayerInven : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        pickUpPanel.SetActive(false);
+       // pickUpPanel.SetActive(false);
     }
 
     private IEnumerator ResetPickup()
