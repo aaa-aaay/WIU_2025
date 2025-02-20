@@ -12,6 +12,7 @@ public class Shop : MonoBehaviour
     [SerializeField] private List<ShopSlot> playerSlot;
     [SerializeField] private List<Item> shopItems;
     private PlayerInven player;
+    private PlayerStats playerStats;
 
     private List<Item> items;
 
@@ -31,7 +32,12 @@ public class Shop : MonoBehaviour
     }
     private void OnTriggerStay(Collider other)
     {
+        if(player == null)
          player = other.gameObject.GetComponentInChildren<PlayerInven>();
+
+        if(playerStats == null)
+            playerStats = other.GetComponentInParent<PlayerStats>();
+
         if (player != null)
         {
             if (Input.GetKey(KeyCode.E))
@@ -124,8 +130,9 @@ public class Shop : MonoBehaviour
         }
     }
 
-    private void ItemBought(string name)
+    private void ItemBought(string name, int price)
     {
+        if(!playerStats.HasEnoughGold(price)) return;
         for (int i = shopItems.Count - 1; i >= 0; i--)
         {
             Item item = shopItems[i];
@@ -139,6 +146,7 @@ public class Shop : MonoBehaviour
                     DisplayShop();
                     DisplayInventory();
                     player.SetPlayerInventory(item,true);
+                    playerStats.UseGold(price);
                     break;
                 }
                 else

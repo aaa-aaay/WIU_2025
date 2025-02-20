@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -34,6 +35,8 @@ public class PlayerStats : MonoBehaviour
     public int MaxHealth => stats[SkillSO.UpgradeType.MaxHealth];
     public int MaxMana => stats[SkillSO.UpgradeType.MaxMana];
 
+    public event Action<int> OnMoneyAmtChanged;
+
     private void Awake()
     {
         playerSkillManager = GetComponent<PlayerSkillManager>();
@@ -45,6 +48,13 @@ public class PlayerStats : MonoBehaviour
         }
         Health = MaxHealth;
         Mana = MaxMana;
+
+
+    }
+    private void Start()
+    {
+        Gold = 40; //tempory starting gold for now
+        OnMoneyAmtChanged?.Invoke(Gold); //send the init gold to ui
     }
 
     private void Update()
@@ -63,6 +73,8 @@ public class PlayerStats : MonoBehaviour
             barrierCdRemaining -= Time.deltaTime;
             barrierCdImage.fillAmount = barrierCdRemaining / barrierCd; // % of cd left
         }
+        if (Input.GetKeyDown(KeyCode.P)) { TakeDamage(10); }
+        if (Input.GetKeyDown(KeyCode.L)) { UseMana(10); }
     }
 
     public void UpgradeStat(SkillSO type)
@@ -105,13 +117,22 @@ public class PlayerStats : MonoBehaviour
         Mana = Mathf.Min(Mana, MaxMana);
 
     }
+    public bool UseMana(int amt)
+    {
+        int manaCost = Mathf.Max(amt, 0); // ensure no negative
+        if (Mana - manaCost < 0) { return false; }
+        else Mana = Mathf.Max(Mana - manaCost, 0);
+        return true;
+
+    }
 
     public void UseGold(int amt)
     {
         if (Gold >= amt)
         {
             Gold -= amt;
-        }
+            OnMoneyAmtChanged.Invoke(Gold); //Update UI
+}
         else
         {
             Debug.Log("Player only has " + Gold);
