@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameLogic : MonoBehaviour
@@ -17,17 +18,23 @@ public class GameLogic : MonoBehaviour
     private List<GameObject> spawnedEnemies = new List<GameObject>();
     private int waveCycle = 0;         
     private bool bossSpawned = false;
+    float elapsedTime = 0f;
 
     void Start()
     {
         StartCoroutine(WaveCycleRoutine());
     }
 
+    private void Update()
+    {
+        Debug.Log(elapsedTime);
+    }
+
     IEnumerator WaveCycleRoutine()
     {
         while (true)
         {
-            float elapsedTime = 0f;
+
             while (elapsedTime < waveDuration)
             {
                 SpawnWave();
