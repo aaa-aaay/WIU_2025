@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using Cinemachine;
 
 public class PlayerControllerActual : MonoBehaviour
 {
@@ -8,6 +9,11 @@ public class PlayerControllerActual : MonoBehaviour
     public Camera playerCamera;
     private Animator _animator;
     private CharacterController _cc;
+    public Camera firstPersonCamera; // Your existing first-person camera
+    public CinemachineFreeLook thirdPersonCamera; // Your Cinemachine Virtual Camera
+
+    [Header("Camera Toggle")]
+    public KeyCode toggleCameraKey = KeyCode.C; // Key to toggle between cameras
 
     [Header("Movement Settings")]
     public float walkSpeed = 3.0f;
@@ -30,6 +36,7 @@ public class PlayerControllerActual : MonoBehaviour
     [Header("Camera Settings")]
     public float cameraSensitivity = 100f;
     public float cameraRollEffectIntensity = 0.5f;
+    
 
     private float xRotation = 0f;
     private float yRotation = 0f;
@@ -40,6 +47,11 @@ public class PlayerControllerActual : MonoBehaviour
     private float defaultYPos = 0;
     private float timer = 0;
 
+    [Header("Gravity Settings")]
+    public float gravity = -9.81f;
+    private float verticalVelocity = 0f; 
+
+
     private void Start()
     {
         _animator = GetComponent<Animator>();
@@ -48,14 +60,26 @@ public class PlayerControllerActual : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         defaultYPos = cameraTarget.localPosition.y;
+        // Start with first-person camera active
+        firstPersonCamera.enabled = true;
+        thirdPersonCamera.gameObject.SetActive(false);
     }
 
     private void Update()
     {
-        HandleCameraRotation();
+        if (Input.GetKeyDown(toggleCameraKey))
+        {
+            ToggleCamera();
+        }
+
         HandleMovement();
         HandleDodge();
         HandleRoll();
+
+        if (firstPersonCamera.enabled)
+        {
+            HandleCameraRotation();
+        }
     }
 
     private void HandleCameraRotation()
@@ -63,14 +87,32 @@ public class PlayerControllerActual : MonoBehaviour
         float mouseX = Input.GetAxis("Mouse X") * cameraSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * cameraSensitivity * Time.deltaTime;
 
+        // Rotate camera only; do not affect player rotation in third person
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
         yRotation += mouseX;
 
-        //moedl and camerea same direction
-        cameraTarget.rotation = Quaternion.Euler(xRotation, yRotation, 0f);
-        Quaternion targetRotation = Quaternion.Euler(0, yRotation, 0);
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * playerTurnSpeed);
+        if (firstPersonCamera.enabled)
+        {
+            // First-person camera active: Rotate both the camera and the player model
+            cameraTarget.rotation = Quaternion.Euler(xRotation, yRotation, 0f);
+            Quaternion targetRotation = Quaternion.Euler(0, yRotation, 0);
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * playerTurnSpeed);
+        }
+        else
+        {
+            // Third-person mode: Camera rotates independently
+            // Ensure Cinemachine's camera is correctly setup to rotate around the player
+        }
+    }
+
+    private void ToggleCamera()
+    {
+        bool isThirdPerson = thirdPersonCamera.gameObject.activeSelf;
+
+        // Toggle the state of the cameras
+        firstPersonCamera.enabled = isThirdPerson;
+        thirdPersonCamera.gameObject.SetActive(!isThirdPerson);
     }
 
     private void HandleMovement()
@@ -82,18 +124,39 @@ public class PlayerControllerActual : MonoBehaviour
         bool isMoving = input.sqrMagnitude > 0.01f;
         float currentSpeed = isRunning ? runSpeed : walkSpeed;
 
+        // Apply gravity
+        if (_cc.isGrounded)
+        {
+            verticalVelocity = -0.5f; 
+        }
+        else
+        {
+            verticalVelocity += gravity * Time.deltaTime; 
+        }
+
         if (isMoving)
         {
-            Vector3 forward = transform.forward;
-            Vector3 right = transform.right;
-            forward.y = 0;
+            // Get the camera's forward and right vectors
+            Vector3 forward = Camera.main.transform.forward;
+            Vector3 right = Camera.main.transform.right;
+            forward.y = 0; // Ignore the y component for flat movement
             right.y = 0;
-
             forward.Normalize();
             right.Normalize();
 
+            // Calculate direction based on input relative to the camera
             Vector3 direction = (forward * input.y + right * input.x).normalized;
-            _cc.Move(direction * currentSpeed * Time.deltaTime);
+
+            // Rotate the character to face the direction of movement
+            if (!firstPersonCamera.enabled) 
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * playerTurnSpeed);
+            }
+
+            // Move the character (including vertical velocity for gravity)
+            _cc.Move((direction * currentSpeed + Vector3.up * verticalVelocity) * Time.deltaTime);
+
+            // Handle bobbing effect
             float dynamicBobbingSpeed = isRunning ? bobbingSpeed * 1.5f : bobbingSpeed;
             float dynamicBobbingAmount = isRunning ? bobbingAmount * 1.2f : bobbingAmount * 0.8f;
             timer += Time.deltaTime * dynamicBobbingSpeed;
@@ -101,12 +164,33 @@ public class PlayerControllerActual : MonoBehaviour
         }
         else
         {
+            // Apply gravity even when not moving
+            _cc.Move(Vector3.up * verticalVelocity * Time.deltaTime);
+
             timer = 0;
             cameraTarget.localPosition = new Vector3(cameraTarget.localPosition.x, Mathf.Lerp(cameraTarget.localPosition.y, defaultYPos, Time.deltaTime * playerTurnSpeed), cameraTarget.localPosition.z);
         }
-
         _animator.SetFloat("Speed", isMoving ? (isRunning ? 1f : 0.5f) : 0);
     }
+
+
+
+    private void HandleBobbing(bool isRunning, Vector3 direction)
+    {
+        if (direction.magnitude > 0)  // Only bob if actually moving
+        {
+            float dynamicBobbingSpeed = isRunning ? bobbingSpeed * 1.5f : bobbingSpeed;
+            float dynamicBobbingAmount = isRunning ? bobbingAmount * 1.2f : bobbingAmount * 0.8f;
+            timer += Time.deltaTime * dynamicBobbingSpeed;
+            cameraTarget.localPosition = new Vector3(cameraTarget.localPosition.x, defaultYPos + Mathf.Sin(timer) * dynamicBobbingAmount, cameraTarget.localPosition.z);
+        }
+        else
+        {
+            timer = 0;  // Reset bobbing timer if not moving
+            cameraTarget.localPosition = new Vector3(cameraTarget.localPosition.x, Mathf.Lerp(cameraTarget.localPosition.y, defaultYPos, Time.deltaTime * playerTurnSpeed), cameraTarget.localPosition.z);
+        }
+    }
+
 
     private void HandleDodge()
     {
@@ -225,7 +309,7 @@ public class PlayerControllerActual : MonoBehaviour
         float reducedHeight = originalHeight * 0.5f;
         Vector3 reducedCenter = new Vector3(originalCenter.x, originalCenter.y - originalHeight * 0.25f, originalCenter.z);
 
-        _cc.height = reducedHeight;
+        _cc.height = reducedHeight; 
         _cc.center = reducedCenter;
 
         while (elapsedTime < rollDuration)
