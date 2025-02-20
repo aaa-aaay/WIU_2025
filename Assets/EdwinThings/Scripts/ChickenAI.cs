@@ -90,10 +90,7 @@ public class ChickenAI : MonoBehaviour
 
                 break;
 
-            case States.DEFEND:
-                // TODO: Add defend behavior
-                Debug.Log("State: DEFEND");
-                break;
+          
 
             case States.VUNERABLE:
                 // TODO: Add vulnerable behavior

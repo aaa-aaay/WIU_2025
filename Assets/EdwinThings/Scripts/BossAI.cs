@@ -33,6 +33,7 @@ public class BossAI : MonoBehaviour
     void Update()
     {
         StateMachine();
+        Debug.Log(currentState);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -41,6 +42,16 @@ public class BossAI : MonoBehaviour
         {
             Debug.Log("Attack");
             currentState = States.ATTACKING;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            Debug.Log("WHATISDGSKGF");
+            resetAnimationBools();
+            currentState = States.CHASE;
         }
     }
 
@@ -78,21 +89,16 @@ public class BossAI : MonoBehaviour
                 break;
 
             case States.ATTACKING:
+                whichAttack = UnityEngine.Random.Range(0, 4);
                 if (!animator.GetBool("IsAttacking"))
                 {
                     Debug.Log("State: Attack");
                     animator.SetBool("IsAttacking", true);
-                    whichAttack = UnityEngine.Random.Range(0, 4);
                     Debug.Log(whichAttack);
                     animator.SetInteger("WhichAttack", whichAttack);
                 }
 
 
-                break;
-
-            case States.DEFEND:
-                // TODO: Add defend behavior
-                Debug.Log("State: DEFEND");
                 break;
 
             case States.VUNERABLE:

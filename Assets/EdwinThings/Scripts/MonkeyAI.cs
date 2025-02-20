@@ -12,7 +12,7 @@ public class MonkeyAI : MonoBehaviour
     private States currentState;
     [SerializeField] Animator animator;
     [SerializeField] SphereCollider attackCollider;
-    private bool shouldAttack;
+    private bool shouldAttack = false;
     private int whichAttack;
 
     // Adjustable rotation speed
@@ -41,14 +41,17 @@ public class MonkeyAI : MonoBehaviour
         {
             Debug.Log("Attack");
             currentState = States.ATTACKING;
+            shouldAttack = true;
         }
     }
+
 
     public void resetAnimationBools()
     {
         Debug.Log("RESET");
         animator.SetBool("IsChasing", false);
         animator.SetBool("IsAttacking", false);
+        animator.SetBool("IsStun", false);
     }
 
     public void setBossState(States statename)
@@ -78,26 +81,26 @@ public class MonkeyAI : MonoBehaviour
                 break;
 
             case States.ATTACKING:
+
                 if (!animator.GetBool("IsAttacking"))
                 {
                     Debug.Log("State: Attack");
                     animator.SetBool("IsAttacking", true);
-                    whichAttack = UnityEngine.Random.Range(-1, 4);
-                    Debug.Log(whichAttack);
-                    animator.SetInteger("WhichAttack", whichAttack);
                 }
 
 
+
+
                 break;
 
-            case States.DEFEND:
-                // TODO: Add defend behavior
-                Debug.Log("State: DEFEND");
-                break;
+           
 
             case States.VUNERABLE:
-                // TODO: Add vulnerable behavior
-                Debug.Log("State: VUNERABLE");
+                if (!animator.GetBool("IsStun"))
+                {
+                    Debug.Log("State: Vunerable");
+                    animator.SetBool("IsStun", true);
+                }
                 break;
 
             case States.ATTACKED:

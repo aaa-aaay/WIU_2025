@@ -6,7 +6,6 @@ public enum States
 {
     CHASE,
     ATTACKING,
-    DEFEND,
     VUNERABLE,
     ATTACKED,
     STUNNED,
