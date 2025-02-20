@@ -12,15 +12,13 @@ public class Potion : Item
 
     private void Start()
     {
+        base.Start();
+
         if (itemSo is PotionSO potion) // Check if itemSo is actually a PotionSO
         {
             potionStrength = potion.regenvalue;
             type = potion.potionType;
         }
-    }
-    public override void PickUp() // maybe play a different sfx here or smth
-    {
-        Destroy(gameObject);
     }
 
 
