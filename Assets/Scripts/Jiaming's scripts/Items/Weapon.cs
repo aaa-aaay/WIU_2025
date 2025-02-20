@@ -1,19 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Weapon : Item
 {
-    [HideInInspector]public int damage; 
-    [HideInInspector]public int skillDamage;
-    private GameObject skillprefab;
-    private Vector3 spawnOffset;
-    private Vector3 positionoffset;
-    private Quaternion rotationoffset;
-
-    private BoxCollider weaponCollider;
-    private List<GameObject> hasDealtDamage = new List<GameObject>();
+    [HideInInspector]public float damage; 
+    [HideInInspector]public float skillDamage;
+    [HideInInspector] private GameObject skillprefab;
+    [HideInInspector] private Vector3 spawnOffset;
     private void Start()
     {
         base.Start();
@@ -24,23 +18,13 @@ public class Weapon : Item
             skillDamage = weapon.skillDamage;
             skillprefab = weapon.MagicEffect;
             spawnOffset = weapon.magicSpawnOffset;
-            positionoffset = weapon.handTransformOffset;
-            rotationoffset = weapon.handTransformRotation;
         }
-        weaponCollider = GetComponent<BoxCollider>();
-        weaponCollider.enabled = false; ;
 
     }
 
     public void UseWeaponAttack()
     {
-        weaponCollider.enabled = true;
-        hasDealtDamage.Clear();
-    }
-    public void DisableWeaponAttack()
-    {
-        weaponCollider.enabled = false;
-        hasDealtDamage.Clear();
+        //enable collier?
     }
     public void UseWeaponSkill()
     {
@@ -49,23 +33,5 @@ public class Weapon : Item
         }
 
         //spawn the effect at a position at the player
-    }
-    public void SetWeaponPosition(Transform transform)
-    {
-        gameObject.transform.SetParent(transform,false);
-        gameObject.transform.localPosition = positionoffset;
-        gameObject.transform.localRotation = rotationoffset;
-    }
-
-
-    private void OnTriggerEnter(Collider other)
-    {
-        EnemyHealth enemy = other.gameObject.GetComponent<EnemyHealth>();
-        if(enemy != null && !hasDealtDamage.Contains(enemy.gameObject))
-        {
-            enemy.TakeDamage(damage);
-            hasDealtDamage.Add(other.gameObject);
-
-        }
     }
 }

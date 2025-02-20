@@ -7,22 +7,12 @@ using System.Linq;
 public class InvenUIManager : MonoBehaviour
 {
     [SerializeField] private PlayerInven playerIven;
-    [SerializeField] private PlayerStats playerStats;
     [SerializeField] GameObject potionPanel;
     [SerializeField] GameObject weaponPanel;
-    [SerializeField] GameObject moneyPanel;
-
 
     private TMP_Text potionCount;
     private Image potionImage;
     private Image weaponImage;
-    private TMP_Text moneyText;
-
-    private void Awake()
-    {
-        moneyText = moneyPanel.GetComponentInChildren<TMP_Text>();
-        playerStats.OnMoneyAmtChanged += UpdateMoneyCount;
-    }
 
     private void Start()
     {
@@ -35,14 +25,11 @@ public class InvenUIManager : MonoBehaviour
                  .FirstOrDefault(img => img.gameObject != weaponPanel);
 
 
-
-
         potionPanel.SetActive(false);
         weaponPanel.SetActive(false);
 
         playerIven.OnInventoryUpdated += UpdatePotionUI;
         playerIven.OnWeaponUpdated += UpdateWeaponUI;
-        playerStats.OnMoneyAmtChanged += UpdateMoneyCount;
 
     }
 
@@ -59,7 +46,7 @@ public class InvenUIManager : MonoBehaviour
         potionCount.text = count.ToString();
 
     }
-    private void UpdateWeaponUI(Sprite img, GameObject wepaonGO)
+    private void UpdateWeaponUI(Sprite img = null)
     {
         if(img == null)
         {
@@ -68,10 +55,5 @@ public class InvenUIManager : MonoBehaviour
         }
         weaponPanel.SetActive(true);
         weaponImage.sprite = img;
-    }
-
-    private void UpdateMoneyCount(int amt)
-    {
-        moneyText.text = amt.ToString();
     }
 }

@@ -19,8 +19,6 @@ MonoBehaviour:
   price: 30
   damage: 30
   skillDamage: 50
-  handTransformOffset: {x: -0.4, y: 0.2, z: -0.02}
-  handTransformRotation: {x: -0.40537155, y: -0.6287107, z: 0.23484614, w: 0.62068033}
   healthRequiement: 20
   speedRequirement: 40
   defenseRequirement: 40
