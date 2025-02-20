@@ -22,12 +22,12 @@ public class PlayerInven : MonoBehaviour
 
     private List<Potion> healthpotion = new List<Potion>();
     private List<Potion> mamaPotion = new List<Potion>();
-    private List<Weapon> weaponList = new List<Weapon>();
+    private List<Weapon> weaponList = new List<Weapon>();   
 
     private int currentPotionDisplayed;
     private int currentWeaponDisplayed;
 
-    private Weapon currentWeapon;
+    public Weapon currentWeapon;
     private Potion currentPotion;
 
     private bool isPickingUp = false;

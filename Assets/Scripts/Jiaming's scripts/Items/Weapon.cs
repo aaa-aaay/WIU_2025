@@ -5,7 +5,9 @@ using UnityEngine;
 public class Weapon : Item
 {
     [HideInInspector]public float damage; 
-    [HideInInspector]public float skillDamage; 
+    [HideInInspector]public float skillDamage;
+    [HideInInspector] private GameObject skillprefab;
+    [HideInInspector] private Vector3 spawnOffset;
     private void Start()
     {
         base.Start();
@@ -14,6 +16,8 @@ public class Weapon : Item
         {
             damage = weapon.damage;
             skillDamage = weapon.skillDamage;
+            skillprefab = weapon.MagicEffect;
+            spawnOffset = weapon.magicSpawnOffset;
         }
 
     }
@@ -24,6 +28,10 @@ public class Weapon : Item
     }
     public void UseWeaponSkill()
     {
+        if(skillprefab != null) {
+            Instantiate(skillprefab, transform.position - spawnOffset, Quaternion.identity);
+        }
+
         //spawn the effect at a position at the player
     }
 }

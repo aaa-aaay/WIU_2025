@@ -5,7 +5,6 @@ using UnityEngine.UI;
 using System.Linq;
 using UnityEngine.EventSystems;
 using System;
-using Unity.VisualScripting;
 
 public class ShopSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -43,7 +42,6 @@ public class ShopSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void SetInfo(int amount, Sprite img, string name, string description, int price)
     {
-        Debug.Log("inventory seyt");
         image.gameObject.SetActive (true);
         image.sprite = img;
         amountTxt.text = amount.ToString();

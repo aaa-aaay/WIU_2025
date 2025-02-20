@@ -15,6 +15,11 @@ public class Shop : MonoBehaviour
 
     private List<Item> items;
 
+    private void OnEnable()
+    {
+        shopCanvas.SetActive(true);
+    }
+
     private void Start()
     {
         shopCanvas.SetActive(false);
@@ -31,7 +36,12 @@ public class Shop : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.E))
             {
-
+                if(shopCanvas.activeSelf)
+                {
+                    shopCanvas.SetActive(false);
+                    Cursor.visible = false;
+                    Cursor.lockState = CursorLockMode.Locked;
+                }
                 //openShop
                 shopCanvas.SetActive(true);
                 Cursor.visible = true;
@@ -41,6 +51,7 @@ public class Shop : MonoBehaviour
                 DisplayShop();
 
             }
+
         }
     }
     private void OnTriggerExit(Collider other)
@@ -49,7 +60,8 @@ public class Shop : MonoBehaviour
         if (player != null)
         {
             shopCanvas.SetActive(false);
-
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
         }
     }
 

@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class SpellCasting : MonoBehaviour
 {
-    public Weapon weapon;
+
+    [SerializeField] private PlayerInven playerInven;
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
-            weapon.UseWeaponSkill();
+            Debug.Log("Spell cast");
+            if(playerInven.currentWeapon != null)
+            {
+                playerInven.currentWeapon.UseWeaponSkill();
+            }
+
         }
     }
 }

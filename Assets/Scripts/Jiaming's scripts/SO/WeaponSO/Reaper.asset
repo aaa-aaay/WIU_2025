@@ -19,3 +19,9 @@ MonoBehaviour:
   price: 30
   damage: 30
   skillDamage: 50
+  healthRequiement: 20
+  speedRequirement: 40
+  defenseRequirement: 40
+  MagicEffect: {fileID: 1343360775990789499, guid: d31baa0165737cf45a9b927c2c0c243a,
+    type: 3}
+  magicSpawnOffset: {x: 0, y: 1, z: 0}
