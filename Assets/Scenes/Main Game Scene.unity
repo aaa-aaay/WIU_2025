@@ -2448,6 +2448,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2709251189445064887, guid: a6e9999cbc45c9941b579b9cbd524020,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6429523911297890156, guid: a6e9999cbc45c9941b579b9cbd524020,
         type: 3}
       propertyPath: playerIven
