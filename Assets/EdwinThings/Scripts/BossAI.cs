@@ -49,7 +49,6 @@ public class BossAI : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("WHATISDGSKGF");
             resetAnimationBools();
             currentState = States.CHASE;
         }
