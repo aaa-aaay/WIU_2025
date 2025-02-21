@@ -12,6 +12,8 @@ public class SkillTreeUI : MonoBehaviour
     public TextMeshProUGUI goldRequiredText;
     public Button unlockButton;
 
+    private bool isPanelOpen = false;
+
     private void Start()
     {
         skillManager = FindObjectOfType<PlayerSkillManager>();
