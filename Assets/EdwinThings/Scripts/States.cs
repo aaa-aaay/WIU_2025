@@ -18,5 +18,5 @@ public enum whichAI
 {
     BOSS,
     MONKEY,
-    CHICKEN
+    FOX
 }

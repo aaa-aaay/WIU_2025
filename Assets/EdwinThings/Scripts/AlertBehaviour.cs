@@ -7,7 +7,7 @@ public class AlertBehaviour : StateMachineBehaviour
 {
     private BossAI boss;
     private MonkeyAI monkey;
-    private ChickenAI chicken;
+    private FoxAI fox;
     public States setState;
     public whichAI currentAI;
     private GameObject enemyObj;
@@ -32,13 +32,13 @@ public class AlertBehaviour : StateMachineBehaviour
                 Debug.LogWarning("MonkeyAI instance not found!");
             }
         }
-        else if (currentAI == whichAI.CHICKEN)
+        else if (currentAI == whichAI.FOX)
         {
-            enemyObj = GameObject.Find("Chicken");
-            chicken = enemyObj.GetComponent<ChickenAI>();
-            if (chicken == null)
+            enemyObj = GameObject.Find("Fox");
+            fox = enemyObj.GetComponent<FoxAI>();
+            if (fox == null)
             {
-                Debug.LogWarning("ChickenAI instance not found!");
+                Debug.LogWarning("foxAI instance not found!");
             }
         }
 
@@ -56,10 +56,10 @@ public class AlertBehaviour : StateMachineBehaviour
             monkey.resetAnimationBools();
             monkey.setBossState(setState);
         }
-        else if (currentAI == whichAI.CHICKEN)
+        else if (currentAI == whichAI.FOX)
         {
-            chicken.resetAnimationBools();
-            chicken.setBossState(setState);
+            fox.resetAnimationBools();
+            fox.setBossState(setState);
         }
 
     }

@@ -6,15 +6,13 @@ using UnityEngine;
 
 
 
-public class ChickenAI : MonoBehaviour
+public class FoxAI : MonoBehaviour
 {
     private Transform playerPos;
     private States currentState;
     [SerializeField] Animator animator;
     [SerializeField] SphereCollider attackCollider;
-    private bool shouldAttack;
-    private int whichAttack;
-
+    private Quaternion targetRotation;
     // Adjustable rotation speed
     [SerializeField] float rotationSpeed = 5f;
 
@@ -26,7 +24,6 @@ public class ChickenAI : MonoBehaviour
         playerPos = obj.GetComponent<Transform>();
 
         resetAnimationBools();
-        whichAttack = 0;
         currentState = States.CHASE;
         if (animator == null)
         {
@@ -38,6 +35,7 @@ public class ChickenAI : MonoBehaviour
     void Update()
     {
         StateMachine();
+        Debug.Log(currentState);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -49,17 +47,10 @@ public class ChickenAI : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            resetAnimationBools();
-            currentState = States.CHASE;
-        }
-    }
 
     public void resetAnimationBools()
     {
+        attackCollider.enabled = true;
         animator.SetBool("IsChasing", false);
         animator.SetBool("IsAttacking", false);
     }
@@ -80,7 +71,7 @@ public class ChickenAI : MonoBehaviour
 
                 if (direction.sqrMagnitude > 0.001f)
                 {
-                    Quaternion targetRotation = Quaternion.LookRotation(direction);
+                    targetRotation = Quaternion.LookRotation(direction);
                     transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
                 }
                 if (!animator.GetBool("IsChasing"))
@@ -90,8 +81,13 @@ public class ChickenAI : MonoBehaviour
                 break;
 
             case States.ATTACKING:
+                direction = playerPos.position - transform.position;
+                direction.y = 0;
+                targetRotation = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
                 if (!animator.GetBool("IsAttacking"))
                 {
+                    attackCollider.enabled = false;
                     animator.SetBool("IsAttacking", true);
                 }
 

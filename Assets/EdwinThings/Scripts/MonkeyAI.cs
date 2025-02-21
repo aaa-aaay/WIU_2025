@@ -92,15 +92,9 @@ public class MonkeyAI : MonoBehaviour
 
             case States.ATTACKING:
                 direction = playerPos.position - transform.position;
-                direction.y = 0;  // Ignore vertical difference
-
-                // Get the initial rotation toward the player
+                direction.y = 0; 
                 Quaternion baseRotation = Quaternion.LookRotation(direction);
-
-                // Add a 90 degree clockwise rotation around the Y-axis
                 Quaternion targetRotation = baseRotation * Quaternion.Euler(0, 90, 0);
-
-                // Smoothly rotate toward the target rotation
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 
                 if (!animator.GetBool("IsAttacking"))
