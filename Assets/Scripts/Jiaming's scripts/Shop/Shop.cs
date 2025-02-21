@@ -13,8 +13,12 @@ public class Shop : MonoBehaviour
     [SerializeField] private List<Item> shopItems;
     private PlayerInven player;
     private PlayerStats playerStats;
+    private PlayerControllerActual pc;
 
     private List<Item> items;
+    private bool shopPanelOpen = false; // Add a toggle state
+    private float interactionCooldown = 0.2f; // Add a cooldown duration
+    private float lastInteractionTime = 0f; // Track the last interaction time
 
     private void OnEnable()
     {
@@ -30,44 +34,69 @@ public class Shop : MonoBehaviour
             shopSlot.BuyingItem += ItemBought;
         }
     }
+
+    private void Update()
+    {
+    }
+
+
     private void OnTriggerStay(Collider other)
     {
-        if(player == null)
-         player = other.gameObject.GetComponentInChildren<PlayerInven>();
+        if (player == null)
+            player = other.GetComponentInChildren<PlayerInven>();
 
-        if(playerStats == null)
+        if (playerStats == null)
             playerStats = other.GetComponentInParent<PlayerStats>();
 
-        if (player != null)
+        if (pc == null)
+            pc = other.GetComponentInParent<PlayerControllerActual>();
+
+        if (player != null && pc != null && Time.time - lastInteractionTime > interactionCooldown)
         {
-            if (Input.GetKey(KeyCode.E))
+            if (Input.GetKeyDown(KeyCode.E))
             {
-                if(shopCanvas.activeSelf)
+                lastInteractionTime = Time.time;
+                shopPanelOpen = !shopPanelOpen;
+
+                if (shopPanelOpen)
                 {
+                    // Open Shop
+                    pc.enabled = false;
+                    shopCanvas.SetActive(true);
+                    Cursor.visible = true;
+                    Cursor.lockState = CursorLockMode.None;
+                    items = player.GetPlayerInventory();
+                    DisplayInventory();
+                    DisplayShop();
+                }
+                else
+                {
+                    // Close Shop
                     shopCanvas.SetActive(false);
                     Cursor.visible = false;
                     Cursor.lockState = CursorLockMode.Locked;
+                    pc.enabled = true;
                 }
-                //openShop
-                shopCanvas.SetActive(true);
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
-                items = player.GetPlayerInventory();
-                DisplayInventory();
-                DisplayShop();
-
             }
-
         }
     }
+
     private void OnTriggerExit(Collider other)
     {
-        PlayerInven player = other.gameObject.GetComponentInChildren<PlayerInven>();
-        if (player != null)
+        // Ensure everything is closed when the player leaves the trigger area
+        if (other.GetComponentInChildren<PlayerInven>() == player)
         {
+            shopPanelOpen = false;
             shopCanvas.SetActive(false);
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
+
+            if (pc != null)
+                pc.enabled = true;
+
+            player = null;
+            playerStats = null;
+            pc = null;
         }
     }
 

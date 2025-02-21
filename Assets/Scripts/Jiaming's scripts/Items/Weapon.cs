@@ -64,6 +64,7 @@ public class Weapon : Item
         if(enemy != null && !hasDealtDamage.Contains(enemy.gameObject))
         {
             enemy.TakeDamage(damage);
+            Debug.Log("Enemy took damage");
             hasDealtDamage.Add(other.gameObject);
 
         }

@@ -20,12 +20,7 @@ public class InvenUIManager : MonoBehaviour
 
     private void Awake()
     {
-        moneyText = moneyPanel.GetComponentInChildren<TMP_Text>();
-        playerStats.OnMoneyAmtChanged += UpdateMoneyCount;
-    }
 
-    private void Start()
-    {
         potionCount = potionPanel.GetComponentInChildren<TMP_Text>();
 
         potionImage = potionPanel.GetComponentsInChildren<Image>(true)
@@ -34,15 +29,26 @@ public class InvenUIManager : MonoBehaviour
         weaponImage = weaponPanel.GetComponentsInChildren<Image>(true)
                  .FirstOrDefault(img => img.gameObject != weaponPanel);
 
-
-
-
         potionPanel.SetActive(false);
         weaponPanel.SetActive(false);
 
+        moneyText = moneyPanel.GetComponentInChildren<TMP_Text>();
+        playerStats.OnMoneyAmtChanged += UpdateMoneyCount;
         playerIven.OnInventoryUpdated += UpdatePotionUI;
         playerIven.OnWeaponUpdated += UpdateWeaponUI;
         playerStats.OnMoneyAmtChanged += UpdateMoneyCount;
+    }
+
+    private void Start()
+    {
+
+
+
+
+
+
+
+
 
     }
 
@@ -61,13 +67,15 @@ public class InvenUIManager : MonoBehaviour
     }
     private void UpdateWeaponUI(Sprite img, GameObject wepaonGO)
     {
+        Debug.Log("updating weapon null");
         if(img == null)
         {
+            Debug.Log("image is null");
             weaponPanel.SetActive(false);
             return;
         }
         weaponPanel.SetActive(true);
-        weaponImage.sprite = img;
+        weaponImage.sprite = img;   
     }
 
     private void UpdateMoneyCount(int amt)
