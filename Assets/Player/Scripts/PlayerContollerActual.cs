@@ -122,8 +122,13 @@ public class PlayerControllerActual : MonoBehaviour
                            _animator.GetCurrentAnimatorStateInfo(0).IsName("attacked2") ||
                            _animator.GetCurrentAnimatorStateInfo(0).IsName("attacked3");
 
+        bool isDrawing = _animator.GetCurrentAnimatorStateInfo(0).IsName("playerDraw1") ||
+                      _animator.GetCurrentAnimatorStateInfo(0).IsName("playerDraw2");
+        bool isSheathing = _animator.GetCurrentAnimatorStateInfo(0).IsName("sheath1") ||
+                           _animator.GetCurrentAnimatorStateInfo(0).IsName("sheath2");
+
         // If the player is attacking, prevent movement
-        if (isAttacking)
+        if (isAttacking || isDrawing || isSheathing)
         {
             return; // Skip the movement handling code if attacking
         }
@@ -184,26 +189,6 @@ public class PlayerControllerActual : MonoBehaviour
         _animator.SetFloat("Speed", isMoving ? (isRunning ? 1f : 0.5f) : 0);
     }
 
-
-
-
-    private void HandleBobbing(bool isRunning, Vector3 direction)
-    {
-        if (direction.magnitude > 0)  // Only bob if actually moving
-        {
-            float dynamicBobbingSpeed = isRunning ? bobbingSpeed * 1.5f : bobbingSpeed;
-            float dynamicBobbingAmount = isRunning ? bobbingAmount * 1.2f : bobbingAmount * 0.8f;
-            timer += Time.deltaTime * dynamicBobbingSpeed;
-            cameraTarget.localPosition = new Vector3(cameraTarget.localPosition.x, defaultYPos + Mathf.Sin(timer) * dynamicBobbingAmount, cameraTarget.localPosition.z);
-        }
-        else
-        {
-            timer = 0;  // Reset bobbing timer if not moving
-            cameraTarget.localPosition = new Vector3(cameraTarget.localPosition.x, Mathf.Lerp(cameraTarget.localPosition.y, defaultYPos, Time.deltaTime * playerTurnSpeed), cameraTarget.localPosition.z);
-        }
-    }
-
-
     private void HandleDodge()
     {
         if (Time.time < lastDodgeTime + dodgeCooldown || isDodging) return;
@@ -213,10 +198,18 @@ public class PlayerControllerActual : MonoBehaviour
             Vector3 dodgeDir = Vector3.zero;
             int dodgeDirectionValue = -1;
 
-            if (Input.GetKey(KeyCode.W)) { dodgeDir = transform.forward; dodgeDirectionValue = 0; }
-            if (Input.GetKey(KeyCode.S)) { dodgeDir = -transform.forward; dodgeDirectionValue = 1; }
-            if (Input.GetKey(KeyCode.A)) { dodgeDir = -transform.right; dodgeDirectionValue = 2; }
-            if (Input.GetKey(KeyCode.D)) { dodgeDir = transform.right; dodgeDirectionValue = 3; }
+            // Use camera directions instead of transform directions
+            Vector3 forward = Camera.main.transform.forward;
+            Vector3 right = Camera.main.transform.right;
+            forward.y = 0; // Remove the Y component to keep movement horizontal
+            right.y = 0;
+            forward.Normalize();
+            right.Normalize();
+
+            if (Input.GetKey(KeyCode.W)) { dodgeDir = forward; dodgeDirectionValue = 0; }
+            if (Input.GetKey(KeyCode.S)) { dodgeDir = -forward; dodgeDirectionValue = 1; }
+            if (Input.GetKey(KeyCode.A)) { dodgeDir = -right; dodgeDirectionValue = 2; }
+            if (Input.GetKey(KeyCode.D)) { dodgeDir = right; dodgeDirectionValue = 3; }
 
             if (dodgeDirectionValue != -1)
             {
@@ -228,6 +221,7 @@ public class PlayerControllerActual : MonoBehaviour
             }
         }
     }
+
 
     private IEnumerator DodgeMovement(Vector3 dodgeDir)
     {
@@ -288,10 +282,18 @@ public class PlayerControllerActual : MonoBehaviour
             Vector3 rollDir = Vector3.zero;
             bool isRolling = false;
 
-            if (Input.GetKey(KeyCode.W)) { rollDir += transform.forward; isRolling = true; }
-            if (Input.GetKey(KeyCode.S)) { rollDir += -transform.forward; isRolling = true; }
-            if (Input.GetKey(KeyCode.A)) { rollDir += -transform.right; isRolling = true; }
-            if (Input.GetKey(KeyCode.D)) { rollDir += transform.right; isRolling = true; }
+            // Use camera directions instead of transform directions
+            Vector3 forward = Camera.main.transform.forward;
+            Vector3 right = Camera.main.transform.right;
+            forward.y = 0; // Remove the Y component to keep movement horizontal
+            right.y = 0;
+            forward.Normalize();
+            right.Normalize();
+
+            if (Input.GetKey(KeyCode.W)) { rollDir += forward; isRolling = true; }
+            if (Input.GetKey(KeyCode.S)) { rollDir += -forward; isRolling = true; }
+            if (Input.GetKey(KeyCode.A)) { rollDir += -right; isRolling = true; }
+            if (Input.GetKey(KeyCode.D)) { rollDir += right; isRolling = true; }
 
             if (isRolling)
             {
@@ -302,6 +304,7 @@ public class PlayerControllerActual : MonoBehaviour
             }
         }
     }
+
 
     private IEnumerator RollMovement(Vector3 rollDir)
     {
