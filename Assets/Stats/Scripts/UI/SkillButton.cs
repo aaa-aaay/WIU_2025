@@ -16,4 +16,18 @@ public class SkillButton : MonoBehaviour
     {
         skillTreeUI.ShowSkillInfo(skill);
     }
+
+    public void UpdateSkillUI(bool ableToUnlock)
+    {
+        Transform skillImageTransform = transform.Find("Skill Image"); // Adjust based on hierarchy
+
+        if (skillImageTransform != null)
+        {
+            Image skillIcon = skillImageTransform.GetComponent<Image>();
+            if (skillIcon != null)
+            {
+                skillIcon.color = ableToUnlock ? Color.white : Color.gray;
+            }
+        }
+    }
 }

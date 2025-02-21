@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: Death Reaper
   description: This weapon shots a deadly slash attack
   stackable: 0
-  UI_Image: {fileID: 21300000, guid: 23e3af35fe8ae034c822aff3cd78d589, type: 3}
+  UI_Image: {fileID: 21300000, guid: 521f65206c6985a4eb2c43ce71f4ae35, type: 3}
   price: 30
   damage: 60
   skillDamage: 50
