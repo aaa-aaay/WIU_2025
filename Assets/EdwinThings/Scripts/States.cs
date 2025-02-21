@@ -9,6 +9,7 @@ public enum States
     VUNERABLE,
     ATTACKED,
     STUNNED,
+    BACK,
     DEATH,
     BOSS
 }
