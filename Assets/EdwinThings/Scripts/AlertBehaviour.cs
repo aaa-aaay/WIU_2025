@@ -36,7 +36,7 @@ public class AlertBehaviour : StateMachineBehaviour
         {
             enemyObj = GameObject.Find("Chicken");
             chicken = enemyObj.GetComponent<ChickenAI>();
-            if (boss == null)
+            if (chicken == null)
             {
                 Debug.LogWarning("ChickenAI instance not found!");
             }
@@ -46,7 +46,6 @@ public class AlertBehaviour : StateMachineBehaviour
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        Debug.Log("DONE");
         if (currentAI == whichAI.BOSS)
         {
             boss.resetAnimationBools();

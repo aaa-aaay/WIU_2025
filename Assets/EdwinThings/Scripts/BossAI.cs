@@ -91,6 +91,8 @@ public class BossAI : MonoBehaviour
                 break;
 
             case States.ATTACKING:
+                direction = playerPos.position - transform.position;
+                direction.y = 0;
                 whichAttack = UnityEngine.Random.Range(0, 4);
                 if (!animator.GetBool("IsAttacking"))
                 {
