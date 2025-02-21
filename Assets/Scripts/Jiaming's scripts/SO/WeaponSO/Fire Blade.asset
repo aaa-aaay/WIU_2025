@@ -27,3 +27,5 @@ MonoBehaviour:
   MagicEffect: {fileID: 1450733216584294977, guid: 4d71f1f305ef97e43bbe4f3d318a1abc,
     type: 3}
   magicSpawnOffset: {x: 0, y: 1, z: 0}
+  magicCDTime: 3
+  magicCost: 30

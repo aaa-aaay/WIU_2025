@@ -17,7 +17,7 @@ MonoBehaviour:
   stackable: 0
   UI_Image: {fileID: 21300000, guid: ff6360493c2d057428178c2365049122, type: 3}
   price: 10
-  damage: 10
+  damage: 30
   skillDamage: 0
   handTransformOffset: {x: -0.7, y: -0.3, z: 0}
   handTransformRotation: {x: 0.00091338856, y: 0.99847746, z: -0.017428486, w: 0.052328005}

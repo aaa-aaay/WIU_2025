@@ -17,7 +17,7 @@ MonoBehaviour:
   stackable: 0
   UI_Image: {fileID: 21300000, guid: 23e3af35fe8ae034c822aff3cd78d589, type: 3}
   price: 30
-  damage: 30
+  damage: 60
   skillDamage: 50
   handTransformOffset: {x: -0.4, y: 0.2, z: -0.02}
   handTransformRotation: {x: -0.40537155, y: -0.6287107, z: 0.23484614, w: 0.62068033}
@@ -27,3 +27,5 @@ MonoBehaviour:
   MagicEffect: {fileID: 1343360775990789499, guid: d31baa0165737cf45a9b927c2c0c243a,
     type: 3}
   magicSpawnOffset: {x: 0, y: 1, z: 0}
+  magicCDTime: 10
+  magicCost: 50

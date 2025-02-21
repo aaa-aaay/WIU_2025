@@ -117,6 +117,17 @@ public class PlayerControllerActual : MonoBehaviour
 
     private void HandleMovement()
     {
+        // Check if the player is currently in any attack state
+        bool isAttacking = _animator.GetCurrentAnimatorStateInfo(0).IsName("attacked1") ||
+                           _animator.GetCurrentAnimatorStateInfo(0).IsName("attacked2") ||
+                           _animator.GetCurrentAnimatorStateInfo(0).IsName("attacked3");
+
+        // If the player is attacking, prevent movement
+        if (isAttacking)
+        {
+            return; // Skip the movement handling code if attacking
+        }
+
         if (isDodging) return;
 
         Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
@@ -127,11 +138,11 @@ public class PlayerControllerActual : MonoBehaviour
         // Apply gravity
         if (_cc.isGrounded)
         {
-            verticalVelocity = -0.5f; 
+            verticalVelocity = -0.5f;
         }
         else
         {
-            verticalVelocity += gravity * Time.deltaTime; 
+            verticalVelocity += gravity * Time.deltaTime;
         }
 
         if (isMoving)
@@ -148,7 +159,7 @@ public class PlayerControllerActual : MonoBehaviour
             Vector3 direction = (forward * input.y + right * input.x).normalized;
 
             // Rotate the character to face the direction of movement
-            if (!firstPersonCamera.enabled) 
+            if (!firstPersonCamera.enabled)
             {
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * playerTurnSpeed);
             }
@@ -172,6 +183,7 @@ public class PlayerControllerActual : MonoBehaviour
         }
         _animator.SetFloat("Speed", isMoving ? (isRunning ? 1f : 0.5f) : 0);
     }
+
 
 
 

@@ -33,6 +33,8 @@ public class PlayerInven : MonoBehaviour
 
     public event Action<Sprite, int> OnInventoryUpdated;
     public event Action<Sprite, GameObject> OnWeaponUpdated;
+    public event Action ItemInRange;
+    public event Action ItemLeftRange;
 
 
     private void Start()
@@ -44,7 +46,7 @@ public class PlayerInven : MonoBehaviour
         {
             Debug.Log("weapon sent");
             weaponList.Add(currentWeapon);
-            currentWeapon.SetWeaponPosition(handPosition);
+            currentWeapon.SetWeaponPosition(handPosition, gameObject.GetComponentInParent<PlayerStats>());
             OnWeaponUpdated?.Invoke(currentWeapon.uiImage, currentWeapon.gameObject);
             currentWeaponDisplayed = 0;
         }
@@ -189,6 +191,7 @@ public class PlayerInven : MonoBehaviour
         Item item = other.GetComponent<Item>();
         if(item != null)
         {
+            ItemInRange?.Invoke();
            // pickUpPanel.SetActive(true);
             //TODO: Show the Pick UI
             if (Input.GetKey(tempKeyCode) && !isPickingUp  )
@@ -208,6 +211,7 @@ public class PlayerInven : MonoBehaviour
                     }
 
                     UpdatePotionUI();
+                    ItemLeftRange?.Invoke();
                 }
 
 
@@ -228,7 +232,9 @@ public class PlayerInven : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-       // pickUpPanel.SetActive(false);
+        Item item = other.GetComponent<Item>();
+        if (item != null)
+            ItemLeftRange?.Invoke();
     }
 
     private IEnumerator ResetPickup()
@@ -268,7 +274,7 @@ public class PlayerInven : MonoBehaviour
             if (newItem is Weapon weapon)
             {
                 weaponList.Add(weapon);
-                weapon.SetWeaponPosition(handPosition);
+                weapon.SetWeaponPosition(handPosition, gameObject.GetComponentInParent<PlayerStats>());
                 if(weaponList.Count == 1)
                 {
                     currentWeapon = weapon;
