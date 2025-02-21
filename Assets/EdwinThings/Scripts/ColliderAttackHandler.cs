@@ -4,11 +4,18 @@ using UnityEngine;
 
 public class AttackHandler : MonoBehaviour
 {
-    [SerializeField] SphereCollider[] swordCollider;
-    [SerializeField] PlayerStats playerStats;   
+    [SerializeField] SphereCollider[] colliders;
+
+    private PlayerStats playerStats;
+
+    void Start()
+    {
+        GameObject obj = GameObject.Find("player");
+        playerStats = obj.GetComponent<PlayerStats>();
+    }
     public void EnableCollider(int index)
     {
-        SphereCollider collider = swordCollider[index];
+        SphereCollider collider = colliders[index];
         collider.enabled = true;
 
         LayerMask layer = LayerMask.GetMask("Player");

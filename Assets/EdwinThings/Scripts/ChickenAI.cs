@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class ChickenAI : MonoBehaviour
 {
-    [SerializeField] Transform playerPos;
+    private Transform playerPos;
     private States currentState;
     [SerializeField] Animator animator;
     [SerializeField] SphereCollider attackCollider;
@@ -20,6 +20,11 @@ public class ChickenAI : MonoBehaviour
 
     void Start()
     {
+
+        GameObject obj = GameObject.Find("player");
+        if (obj == null) Debug.Log("no player");
+        playerPos = obj.GetComponent<Transform>();
+
         resetAnimationBools();
         whichAttack = 0;
         currentState = States.CHASE;
@@ -39,14 +44,22 @@ public class ChickenAI : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Attack");
+            resetAnimationBools();
             currentState = States.ATTACKING;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            resetAnimationBools();
+            currentState = States.CHASE;
         }
     }
 
     public void resetAnimationBools()
     {
-        Debug.Log("RESET");
         animator.SetBool("IsChasing", false);
         animator.SetBool("IsAttacking", false);
     }
@@ -73,21 +86,13 @@ public class ChickenAI : MonoBehaviour
                 if (!animator.GetBool("IsChasing"))
                 {
                     animator.SetBool("IsChasing", true);
-                    Debug.Log("State: CHASE");
                 }
                 break;
 
             case States.ATTACKING:
                 if (!animator.GetBool("IsAttacking"))
                 {
-
-                    direction = playerPos.position - transform.position;
-                    direction.y = 0;
-                    Debug.Log("State: Attack");
                     animator.SetBool("IsAttacking", true);
-                    whichAttack = UnityEngine.Random.Range(-1, 4);
-                    Debug.Log(whichAttack);
-                    animator.SetInteger("WhichAttack", whichAttack);
                 }
 
 
