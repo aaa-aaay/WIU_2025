@@ -34,7 +34,7 @@ public class AlertBehaviour : StateMachineBehaviour
         }
         else if (currentAI == whichAI.FOX)
         {
-            enemyObj = GameObject.Find("Fox");
+            enemyObj = GameObject.Find("Fox(Clone)");
             fox = enemyObj.GetComponent<FoxAI>();
             if (fox == null)
             {

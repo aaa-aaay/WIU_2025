@@ -2991,7 +2991,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ae25da654a2ee046a8098b6cd1ac6cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colliders: []
+  colliders:
+  - {fileID: 1367301132}
 --- !u!135 &1367301132
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -3100,7 +3101,7 @@ PrefabInstance:
     - target: {fileID: 3452941018582256688, guid: 4d26a1b9dc58f4149a8e59ea5bf3f684,
         type: 3}
       propertyPath: enemyPrefabs.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3452941018582256688, guid: 4d26a1b9dc58f4149a8e59ea5bf3f684,
         type: 3}
@@ -3162,7 +3163,7 @@ PrefabInstance:
         type: 3}
       propertyPath: enemyPrefabs.Array.data[1]
       value: 
-      objectReference: {fileID: 483162175690689361, guid: f27565c28da982a4f82ac7e597536b2b,
+      objectReference: {fileID: 3595402734119251342, guid: cf76785a6b46afc479f91ef01df7b040,
         type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5053,9 +5054,9 @@ SceneRoots:
   - {fileID: 549651462}
   - {fileID: 1337200088}
   - {fileID: 1765042668}
-  - {fileID: 1529492725}
   - {fileID: 534979812}
   - {fileID: 1367301127}
   - {fileID: 1185765121}
   - {fileID: 131246010}
   - {fileID: 839695189}
+  - {fileID: 1529492725}

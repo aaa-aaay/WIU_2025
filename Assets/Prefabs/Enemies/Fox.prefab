@@ -171,7 +171,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ae25da654a2ee046a8098b6cd1ac6cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colliders: []
+  colliders:
+  - {fileID: 1081291553405014573}
 --- !u!95 &7804337677933276494 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: f74760145022c6947927366cb8529262,
