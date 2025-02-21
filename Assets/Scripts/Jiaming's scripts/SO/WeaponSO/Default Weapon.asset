@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 73b2ff030efa25b43a6aa5cf7821013b, type: 3}
-  m_Name: Lighting Sword
+  m_Name: Default Weapon
   m_EditorClassIdentifier: 
-  itemName: Lighting blade
-  description: This balde's skill does an area damage of lighting
+  itemName: Default Weapon
+  description: This is the default weapon, no skills
   stackable: 0
-  UI_Image: {fileID: 21300000, guid: 8a73852bfe518af4f8da459eb877a365, type: 3}
-  price: 20
-  damage: 20
-  skillDamage: 10
-  handTransformOffset: {x: 0, y: 0.08, z: 0.07}
-  handTransformRotation: {x: -0.000000013473848, y: 0.21643965, z: -0.976296, w: -0.000000043564906}
+  UI_Image: {fileID: 0}
+  price: 10
+  damage: 0
+  skillDamage: 0
+  handTransformOffset: {x: 0, y: 0, z: 0}
+  handTransformRotation: {x: 0, y: 0, z: 0, w: 0}
   healthRequiement: 0
   speedRequirement: 0
   defenseRequirement: 0

@@ -7,6 +7,8 @@ public class WeaponSO : ItemSO
     [Header("Weapon properties")]
     public int damage;
     public int skillDamage;
+    public Vector3 handTransformOffset;
+    public Quaternion handTransformRotation;
 
     [Header("equipment limitations")]
     public int healthRequiement;

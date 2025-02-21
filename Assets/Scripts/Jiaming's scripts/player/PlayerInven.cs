@@ -3,9 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design.Serialization;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class PlayerInven : MonoBehaviour
 {
@@ -17,8 +15,9 @@ public class PlayerInven : MonoBehaviour
     private KeyCode tempKeyCode3 = KeyCode.LeftArrow;
     private KeyCode tempKeyCode4 = KeyCode.RightArrow;
     [SerializeField] private SphereCollider pickupRange;
-    [SerializeField] private GameObject pickUpPanel;
+    //[SerializeField] private GameObject pickUpPanel;
     [SerializeField] private PlayerStats playerStats;
+    [SerializeField] Transform handPosition;
 
     private List<Potion> healthpotion = new List<Potion>();
     private List<Potion> mamaPotion = new List<Potion>();
@@ -33,12 +32,14 @@ public class PlayerInven : MonoBehaviour
     private bool isPickingUp = false;
 
     public event Action<Sprite, int> OnInventoryUpdated;
-    public event Action<Sprite> OnWeaponUpdated;
+    public event Action<Sprite, GameObject> OnWeaponUpdated;
+
 
     private void Start()
     {
         currentPotionDisplayed = 0;
-        pickUpPanel.SetActive(false);
+        playerStats = gameObject.transform.parent.GetComponent<PlayerStats>();
+       // pickUpPanel.SetActive(false);
 
     }
 
@@ -73,7 +74,7 @@ public class PlayerInven : MonoBehaviour
 
                 currentWeaponDisplayed--;
                 currentWeapon = weaponList[currentWeaponDisplayed];
-                OnWeaponUpdated?.Invoke(currentWeapon.uiImage);
+                OnWeaponUpdated?.Invoke(currentWeapon.uiImage, currentWeapon.gameObject);
             }
 
                 
@@ -85,7 +86,7 @@ public class PlayerInven : MonoBehaviour
 
                 currentWeaponDisplayed++;
                 currentWeapon = weaponList[currentWeaponDisplayed];
-                OnWeaponUpdated?.Invoke(currentWeapon.uiImage);
+                OnWeaponUpdated?.Invoke(currentWeapon.uiImage, currentWeapon.gameObject);
 
             } 
             //go previous weapon;
@@ -140,6 +141,9 @@ public class PlayerInven : MonoBehaviour
         if (currentPotionDisplayed == 1 && healthpotion.Count > 0)
         {
             Potion usedPotion = healthpotion.Last();
+            playerStats.HealPotion(usedPotion.potionStrength);
+
+            //Remove from inven
             healthpotion.Remove(usedPotion);
             Destroy(usedPotion.gameObject);
 
@@ -154,10 +158,11 @@ public class PlayerInven : MonoBehaviour
         else if (currentPotionDisplayed == 2 && mamaPotion.Count > 0)
         {
             Potion usedPotion = mamaPotion.Last();
+            playerStats.ManaPotion(usedPotion.potionStrength);
+
+            //Remove from inven
             mamaPotion.Remove(usedPotion);
             Destroy(usedPotion.gameObject);
-
-            //playerStats.RestoreMana(usedPotion.potionStrength);
   
 
             // Switch to health potions if no mana potions are left
@@ -176,7 +181,7 @@ public class PlayerInven : MonoBehaviour
         Item item = other.GetComponent<Item>();
         if(item != null)
         {
-            pickUpPanel.SetActive(true);
+           // pickUpPanel.SetActive(true);
             //TODO: Show the Pick UI
             if (Input.GetKey(tempKeyCode) && !isPickingUp  )
             {
@@ -199,14 +204,14 @@ public class PlayerInven : MonoBehaviour
 
 
 
-                else if(item is Weapon)
-                {
-                    weaponList.Add((Weapon)item);
-                }
+                //else if(item is Weapon)
+                //{
+                //    weaponList.Add((Weapon)item);
+                //}
 
                  
                 item.PickUp(gameObject);
-                pickUpPanel.SetActive(false);
+               // pickUpPanel.SetActive(false);
                 StartCoroutine(ResetPickup());
 
             }
@@ -215,7 +220,7 @@ public class PlayerInven : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        pickUpPanel.SetActive(false);
+       // pickUpPanel.SetActive(false);
     }
 
     private IEnumerator ResetPickup()
@@ -255,10 +260,11 @@ public class PlayerInven : MonoBehaviour
             if (newItem is Weapon weapon)
             {
                 weaponList.Add(weapon);
+                weapon.SetWeaponPosition(handPosition);
                 if(weaponList.Count == 1)
                 {
                     currentWeapon = weapon;
-                    OnWeaponUpdated?.Invoke(currentWeapon.uiImage);
+                    OnWeaponUpdated?.Invoke(currentWeapon.uiImage, currentWeapon.gameObject);
                     currentWeaponDisplayed = 0;
 
                 }
