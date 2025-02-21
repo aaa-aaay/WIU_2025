@@ -4,21 +4,16 @@ using UnityEngine;
 
 public class ParticleCollision : MonoBehaviour
 {
-    public int damage = 10; // Damage dealt by the rocks
+    public int damage = 40; // Damage dealt by the rocks
 
     private void OnParticleCollision(GameObject other)
     {
         Debug.Log("collides with smth??");
-        if (other.gameObject.GetComponent<EnemyHealth>())
+        Debug.Log(other.gameObject.name);
+        EnemyHealth enemy = other.GetComponent<EnemyHealth>();
+        if (enemy != null)
         {
-            TakeDamage(damage);
+            enemy.TakeDamage(damage);
         }
-    }
-
-    private void TakeDamage(int damageAmount)
-    {
-        // Implement your enemy's health system here
-        Debug.Log($"Enemy took {damageAmount} damage from falling rocks!");
-        // Example: Decrease health, trigger animations, or destroy the enemy
     }
 }

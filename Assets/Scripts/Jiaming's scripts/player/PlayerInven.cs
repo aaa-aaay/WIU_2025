@@ -46,7 +46,7 @@ public class PlayerInven : MonoBehaviour
         {
             Debug.Log("weapon sent");
             weaponList.Add(currentWeapon);
-            currentWeapon.SetWeaponPosition(handPosition);
+            currentWeapon.SetWeaponPosition(handPosition, gameObject.GetComponentInParent<PlayerStats>());
             OnWeaponUpdated?.Invoke(currentWeapon.uiImage, currentWeapon.gameObject);
             currentWeaponDisplayed = 0;
         }
@@ -274,7 +274,7 @@ public class PlayerInven : MonoBehaviour
             if (newItem is Weapon weapon)
             {
                 weaponList.Add(weapon);
-                weapon.SetWeaponPosition(handPosition);
+                weapon.SetWeaponPosition(handPosition, gameObject.GetComponentInParent<PlayerStats>());
                 if(weaponList.Count == 1)
                 {
                     currentWeapon = weapon;
