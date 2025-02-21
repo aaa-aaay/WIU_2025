@@ -102,8 +102,7 @@ public class FoxAI : MonoBehaviour
                 break;
 
             case States.ATTACKED:
-                // TODO: Add attacked behavior
-                Debug.Log("State: ATTACKED");
+
                 break;
 
             case States.STUNNED:
