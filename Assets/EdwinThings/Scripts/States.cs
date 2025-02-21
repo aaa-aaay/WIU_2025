@@ -12,3 +12,10 @@ public enum States
     DEATH,
     BOSS
 }
+
+public enum whichAI
+{
+    BOSS,
+    MONKEY,
+    CHICKEN
+}

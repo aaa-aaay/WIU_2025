@@ -98,7 +98,6 @@ public class BossAI : MonoBehaviour
                     animator.SetInteger("WhichAttack", whichAttack);
                 }
 
-
                 break;
 
             case States.VUNERABLE:

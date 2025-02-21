@@ -12,8 +12,6 @@ public class MonkeyAI : MonoBehaviour
     private States currentState;
     [SerializeField] Animator animator;
     [SerializeField] SphereCollider attackCollider;
-    private bool shouldAttack = false;
-    private int whichAttack;
 
     // Adjustable rotation speed
     [SerializeField] float rotationSpeed = 5f;
@@ -21,7 +19,6 @@ public class MonkeyAI : MonoBehaviour
     void Start()
     {
         resetAnimationBools();
-        whichAttack = 0;
         currentState = States.CHASE;
         if (animator == null)
         {
@@ -39,19 +36,15 @@ public class MonkeyAI : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Attack");
             currentState = States.ATTACKING;
-            shouldAttack = true;
         }
     }
 
 
     public void resetAnimationBools()
     {
-        Debug.Log("RESET");
         animator.SetBool("IsChasing", false);
         animator.SetBool("IsAttacking", false);
-        animator.SetBool("IsStun", false);
     }
 
     public void setBossState(States statename)
@@ -66,12 +59,12 @@ public class MonkeyAI : MonoBehaviour
         {
             case States.CHASE:
                 Vector3 direction = playerPos.position - transform.position;
-                direction.y = 0; 
+                direction.y = 0;
 
                 if (direction.sqrMagnitude > 0.001f)
                 {
-                    Quaternion targetRotation = Quaternion.LookRotation(direction);
-                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+                    Quaternion targRot = Quaternion.LookRotation(direction);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targRot, rotationSpeed * Time.deltaTime);
                 }
                 if (!animator.GetBool("IsChasing"))
                 {
@@ -81,36 +74,19 @@ public class MonkeyAI : MonoBehaviour
                 break;
 
             case States.ATTACKING:
-
+                direction = playerPos.position - transform.position;
+                direction.y = 0;
+                Quaternion targetRotation = Quaternion.LookRotation(direction + new Vector3(40,0,0));
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
                 if (!animator.GetBool("IsAttacking"))
                 {
                     Debug.Log("State: Attack");
                     animator.SetBool("IsAttacking", true);
                 }
-
-
-
-
                 break;
-
-           
-
-            case States.VUNERABLE:
-                if (!animator.GetBool("IsStun"))
-                {
-                    Debug.Log("State: Vunerable");
-                    animator.SetBool("IsStun", true);
-                }
-                break;
-
             case States.ATTACKED:
                 // TODO: Add attacked behavior
                 Debug.Log("State: ATTACKED");
-                break;
-
-            case States.STUNNED:
-                // TODO: Add stunned behavior
-                Debug.Log("State: STUNNED");
                 break;
 
             case States.DEATH:
