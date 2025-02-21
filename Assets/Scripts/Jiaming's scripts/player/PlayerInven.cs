@@ -33,6 +33,8 @@ public class PlayerInven : MonoBehaviour
 
     public event Action<Sprite, int> OnInventoryUpdated;
     public event Action<Sprite, GameObject> OnWeaponUpdated;
+    public event Action ItemInRange;
+    public event Action ItemLeftRange;
 
 
     private void Start()
@@ -189,6 +191,7 @@ public class PlayerInven : MonoBehaviour
         Item item = other.GetComponent<Item>();
         if(item != null)
         {
+            ItemInRange?.Invoke();
            // pickUpPanel.SetActive(true);
             //TODO: Show the Pick UI
             if (Input.GetKey(tempKeyCode) && !isPickingUp  )
@@ -208,6 +211,7 @@ public class PlayerInven : MonoBehaviour
                     }
 
                     UpdatePotionUI();
+                    ItemLeftRange?.Invoke();
                 }
 
 
@@ -228,7 +232,9 @@ public class PlayerInven : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-       // pickUpPanel.SetActive(false);
+        Item item = other.GetComponent<Item>();
+        if (item != null)
+            ItemLeftRange?.Invoke();
     }
 
     private IEnumerator ResetPickup()

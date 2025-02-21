@@ -28,7 +28,7 @@ public class Weapon : Item
             rotationoffset = weapon.handTransformRotation;
         }
         weaponCollider = GetComponent<BoxCollider>();
-        weaponCollider.enabled = false; ;
+        weaponCollider.enabled = false;
 
     }
 
@@ -40,7 +40,6 @@ public class Weapon : Item
     public void DisableWeaponAttack()
     {
         weaponCollider.enabled = false;
-        hasDealtDamage.Clear();
     }
     public void UseWeaponSkill()
     {
@@ -58,15 +57,13 @@ public class Weapon : Item
     }
 
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other) 
     {
         EnemyHealth enemy = other.gameObject.GetComponent<EnemyHealth>();
         if(enemy != null && !hasDealtDamage.Contains(enemy.gameObject))
         {
-            enemy.TakeDamage(damage);
-            Debug.Log("Enemy took damage");
             hasDealtDamage.Add(other.gameObject);
-
+            enemy.TakeDamage(damage);
         }
     }
 }

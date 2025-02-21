@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using Unity.VisualScripting;
+using System;
 
 public class Shop : MonoBehaviour
 {
@@ -19,6 +20,8 @@ public class Shop : MonoBehaviour
     private bool shopPanelOpen = false; // Add a toggle state
     private float interactionCooldown = 0.2f; // Add a cooldown duration
     private float lastInteractionTime = 0f; // Track the last interaction time
+    public event Action OnEnterShop;
+    public event Action OnExitShop;
 
     private void OnEnable()
     {
@@ -53,6 +56,7 @@ public class Shop : MonoBehaviour
 
         if (player != null && pc != null && Time.time - lastInteractionTime > interactionCooldown)
         {
+            OnEnterShop?.Invoke();
             if (Input.GetKeyDown(KeyCode.E))
             {
                 lastInteractionTime = Time.time;
@@ -86,6 +90,7 @@ public class Shop : MonoBehaviour
         // Ensure everything is closed when the player leaves the trigger area
         if (other.GetComponentInChildren<PlayerInven>() == player)
         {
+            OnExitShop?.Invoke();
             shopPanelOpen = false;
             shopCanvas.SetActive(false);
             Cursor.visible = false;
