@@ -5,7 +5,7 @@ using UnityEngine;
 public class AttackHandler : MonoBehaviour
 {
     [SerializeField] SphereCollider[] swordCollider;
-
+    [SerializeField] PlayerStats playerStats;   
     public void EnableCollider(int index)
     {
         SphereCollider collider = swordCollider[index];
@@ -19,6 +19,8 @@ public class AttackHandler : MonoBehaviour
             collider.enabled = false;
             //Perform damage on other objects
             Debug.Log("BOMBA");
+            playerStats.TakeDamage(25);
+
         }
     }
 }
