@@ -19,8 +19,8 @@ MonoBehaviour:
   price: 10
   damage: 10
   skillDamage: 0
-  handTransformOffset: {x: -0.3, y: 0.6, z: 0}
-  handTransformRotation: {x: 0.17560776, y: 0.048700336, z: -0.9474944, w: -0.2627634}
+  handTransformOffset: {x: -0.7, y: -0.3, z: 0}
+  handTransformRotation: {x: 0.00091338856, y: 0.99847746, z: -0.017428486, w: 0.052328005}
   healthRequiement: 0
   speedRequirement: 0
   defenseRequirement: 0
