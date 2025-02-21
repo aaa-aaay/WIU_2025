@@ -53,7 +53,7 @@ public class PlayerStats : MonoBehaviour
     }
     private void Start()
     {
-        Gold = 40; //tempory starting gold for now
+        Gold = 70; //tempory starting gold for now
         OnMoneyAmtChanged?.Invoke(Gold); //send the init gold to ui
     }
 

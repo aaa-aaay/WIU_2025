@@ -57,7 +57,7 @@ public class Shop : MonoBehaviour
         if (player != null && pc != null && Time.time - lastInteractionTime > interactionCooldown)
         {
             OnEnterShop?.Invoke();
-            if (Input.GetKeyDown(KeyCode.E))
+            if (Input.GetKey(KeyCode.E))
             {
                 lastInteractionTime = Time.time;
                 shopPanelOpen = !shopPanelOpen;
@@ -65,6 +65,7 @@ public class Shop : MonoBehaviour
                 if (shopPanelOpen)
                 {
                     // Open Shop
+
                     pc.enabled = false;
                     shopCanvas.SetActive(true);
                     Cursor.visible = true;
@@ -75,11 +76,14 @@ public class Shop : MonoBehaviour
                 }
                 else
                 {
+
+                    pc.enabled = true;
                     // Close Shop
                     shopCanvas.SetActive(false);
                     Cursor.visible = false;
                     Cursor.lockState = CursorLockMode.Locked;
-                    pc.enabled = true;
+
+
                 }
             }
         }

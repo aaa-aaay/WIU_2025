@@ -191,6 +191,7 @@ public class PlayerInven : MonoBehaviour
         Item item = other.GetComponent<Item>();
         if(item != null)
         {
+            if(item is Potion potion2) //only show for intems that can pick up
             ItemInRange?.Invoke();
            // pickUpPanel.SetActive(true);
             //TODO: Show the Pick UI
@@ -211,7 +212,7 @@ public class PlayerInven : MonoBehaviour
                     }
 
                     UpdatePotionUI();
-                    ItemLeftRange?.Invoke();
+
                 }
 
 
@@ -223,7 +224,8 @@ public class PlayerInven : MonoBehaviour
 
                  
                 item.PickUp(gameObject);
-               // pickUpPanel.SetActive(false);
+                ItemLeftRange?.Invoke();
+                // pickUpPanel.SetActive(false);
                 StartCoroutine(ResetPickup());
 
             }

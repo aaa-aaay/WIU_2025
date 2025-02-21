@@ -16,7 +16,7 @@ public class AlertBehaviour : StateMachineBehaviour
 
         if (currentAI == whichAI.BOSS)
         {
-            enemyObj = GameObject.Find("Penelope");
+            enemyObj = GameObject.Find("Penelope(Clone)");
             boss = enemyObj.GetComponent<BossAI>();
             if (boss == null)
             {

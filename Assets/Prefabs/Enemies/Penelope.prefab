@@ -126,7 +126,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: a9c719b219e0c79469d6ff95fa532fa1,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2421968060878466873, guid: a9c719b219e0c79469d6ff95fa532fa1,
         type: 3}
@@ -274,7 +274,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb1b76265f255574f95ce49d41e38179, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPos: {fileID: 0}
   animator: {fileID: 7114432843658448432}
   attackCollider: {fileID: 7868355294612619101}
   rotationSpeed: 3
@@ -290,7 +289,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ae25da654a2ee046a8098b6cd1ac6cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swordCollider:
+  colliders:
   - {fileID: 5912523386922390478}
 --- !u!114 &7669101401130679592
 MonoBehaviour:
