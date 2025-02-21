@@ -38,6 +38,15 @@ public class FoxAI : MonoBehaviour
         Debug.Log(currentState);
     }
 
+    public void takeDamage()
+    {
+        animator.SetBool("IsHit", true);
+    }
+    public void death()
+    {
+        animator.SetBool("IsDeath", true);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
