@@ -40,6 +40,20 @@ public class MonkeyAI : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             currentState = States.ATTACKING;
+            animator.SetBool("IsNotFarEnough", true);
+        }
+    }
+    
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player") && currentState == States.BACK)
+        {
+            currentState = States.CHASE;
+        }
+
+        if (other.CompareTag("Player"))
+        {
+            animator.SetBool("IsNotFarEnough", false);
         }
     }
 
@@ -78,14 +92,35 @@ public class MonkeyAI : MonoBehaviour
 
             case States.ATTACKING:
                 direction = playerPos.position - transform.position;
-                direction.y = 0;
-                Quaternion targetRotation = Quaternion.LookRotation(direction);
+                direction.y = 0;  // Ignore vertical difference
+
+                // Get the initial rotation toward the player
+                Quaternion baseRotation = Quaternion.LookRotation(direction);
+
+                // Add a 90 degree clockwise rotation around the Y-axis
+                Quaternion targetRotation = baseRotation * Quaternion.Euler(0, 90, 0);
+
+                // Smoothly rotate toward the target rotation
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+
                 if (!animator.GetBool("IsAttacking"))
                 {
                     Debug.Log("State: Attack");
                     animator.SetBool("IsAttacking", true);
                 }
+                break;
+
+            case States.BACK:
+                direction = playerPos.position - transform.position;
+                direction.y = 0;
+
+                if (direction.sqrMagnitude > 0.001f)
+                {
+                    Quaternion targRot = Quaternion.LookRotation(direction);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targRot, rotationSpeed * Time.deltaTime);
+                }
+
+
                 break;
             case States.ATTACKED:
                 // TODO: Add attacked behavior

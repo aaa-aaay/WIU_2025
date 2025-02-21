@@ -25,7 +25,7 @@ public class AlertBehaviour : StateMachineBehaviour
         }
         else if (currentAI == whichAI.MONKEY)
         {
-            enemyObj = GameObject.Find("Monkey");
+            enemyObj = GameObject.Find("Monkey(Clone)");
             monkey = enemyObj.GetComponent<MonkeyAI>();
             if (boss == null)
             {
