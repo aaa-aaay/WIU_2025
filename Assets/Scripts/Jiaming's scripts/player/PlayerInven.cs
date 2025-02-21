@@ -39,7 +39,15 @@ public class PlayerInven : MonoBehaviour
     {
         currentPotionDisplayed = 0;
         playerStats = gameObject.transform.parent.GetComponent<PlayerStats>();
-       // pickUpPanel.SetActive(false);
+
+        if(currentWeapon != null)
+        {
+            Debug.Log("weapon sent");
+            weaponList.Add(currentWeapon);
+            currentWeapon.SetWeaponPosition(handPosition);
+            OnWeaponUpdated?.Invoke(currentWeapon.uiImage, currentWeapon.gameObject);
+            currentWeaponDisplayed = 0;
+        }
 
     }
 
