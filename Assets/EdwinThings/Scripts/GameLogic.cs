@@ -6,17 +6,17 @@ using UnityEngine;
 public class GameLogic : MonoBehaviour
 {
     [Header("Prefabs and Spawn Points")]
-    public GameObject[] enemyPrefabs;      
-    public GameObject bossPrefab;         
-    public Transform[] spawnPoints;       
+    public GameObject[] enemyPrefabs;
+    public GameObject bossPrefab;
+    public Transform[] spawnPoints;
 
     [Header("Timing Settings")]
-    public float waveDuration = 60f;     
-    public float waitDuration = 60f;    
-    public float spawnInterval = 5f;       
+    public float waveDuration = 60f;
+    public float waitDuration = 60f;
+    public float spawnInterval = 5f;
 
     private List<GameObject> spawnedEnemies = new List<GameObject>();
-    private int waveCycle = 0;         
+    private int waveCycle = 0;
     private bool bossSpawned = false;
     float elapsedTime = 0f;
 
