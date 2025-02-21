@@ -9,8 +9,6 @@ public class Combat : MonoBehaviour
 
     [SerializeField]
     private GameObject sword;
-    [SerializeField]
-    private GameObject HipSword;
 
     private PlayerInven invetroy;
     private bool isEquipped = false;  
@@ -19,10 +17,14 @@ public class Combat : MonoBehaviour
     public float timeSinceAttack;
     public int currentAttack = 0;
 
-    private void Start()
+    private void Awake()
     {
         invetroy = GetComponentInChildren<PlayerInven>();
         invetroy.OnWeaponUpdated += SwitchWeapon;
+    }
+    private void Start()
+    {
+
 
 
     }
@@ -62,14 +64,12 @@ public class Combat : MonoBehaviour
     public void ActivateWeapon()
     {
         sword.SetActive(true);
-        HipSword.SetActive(false);
         Debug.Log("Weapon activated");
     }
 
     public void DeactivateWeapon()
     {
         sword.SetActive(false);
-        HipSword.SetActive(true);
         Debug.Log("Weapon deactivated");
     }
 
