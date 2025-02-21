@@ -18,4 +18,6 @@ public class WeaponSO : ItemSO
     [Header("Magic properties")]
     public GameObject MagicEffect = null;
     public Vector3 magicSpawnOffset;
+    public float magicCDTime;
+    public int magicCost;
 }
