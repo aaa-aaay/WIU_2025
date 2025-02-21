@@ -5,28 +5,68 @@ using UnityEngine;
 
 public class AlertBehaviour : StateMachineBehaviour
 {
-    [SerializeField] private BossAI boss;
+    private BossAI boss;
+    private MonkeyAI monkey;
+    private ChickenAI chicken;
     public States setState;
-
+    public whichAI currentAI;
+    private GameObject enemyObj;
     private void Awake()
     {
-        GameObject bossObject = GameObject.Find("Rumba Dancing");
-        boss = bossObject.GetComponent<BossAI>();
-        if (boss == null)
+
+        if (currentAI == whichAI.BOSS)
         {
-            Debug.LogWarning("BossAI instance not found!");
+            enemyObj = GameObject.Find("Penelope");
+            boss = enemyObj.GetComponent<BossAI>();
+            if (boss == null)
+            {
+                Debug.LogWarning("BossAI instance not found!");
+            }
         }
+        else if (currentAI == whichAI.MONKEY)
+        {
+            enemyObj = GameObject.Find("Monkey");
+            monkey = enemyObj.GetComponent<MonkeyAI>();
+            if (boss == null)
+            {
+                Debug.LogWarning("MonkeyAI instance not found!");
+            }
+        }
+        else if (currentAI == whichAI.CHICKEN)
+        {
+            enemyObj = GameObject.Find("Chicken");
+            chicken = enemyObj.GetComponent<ChickenAI>();
+            if (boss == null)
+            {
+                Debug.LogWarning("ChickenAI instance not found!");
+            }
+        }
+
     }
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        Debug.Log("DONE");
+        if (currentAI == whichAI.BOSS)
+        {
+            boss.resetAnimationBools();
+            boss.setBossState(setState);
+        }
+        else if (currentAI == whichAI.MONKEY)
+        {
+            monkey.resetAnimationBools();
+            monkey.setBossState(setState);
+        }
+        else if (currentAI == whichAI.CHICKEN)
+        {
+            chicken.resetAnimationBools();
+            chicken.setBossState(setState);
+        }
 
     }
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        Debug.Log("DONE");  
-        boss.resetAnimationBools();
-        boss.setBossState(setState);
+
     }
 }
