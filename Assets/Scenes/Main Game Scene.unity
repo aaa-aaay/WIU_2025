@@ -1455,7 +1455,7 @@ MonoBehaviour:
   playerAnim: {fileID: 711084017}
   sword: {fileID: 711084016}
   HipSword: {fileID: 352119408}
-  Sword: {fileID: 0}
+  Sword: {fileID: 711084016}
   isAttacking: 0
   timeSinceAttack: 0
   currentAttack: 0
@@ -2133,12 +2133,12 @@ PrefabInstance:
     - target: {fileID: 843940968468039200, guid: 37badb5c1ddb65044a2c65444c17e708,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -1.1199999
       objectReference: {fileID: 0}
     - target: {fileID: 843940968468039200, guid: 37badb5c1ddb65044a2c65444c17e708,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -7.0600004
       objectReference: {fileID: 0}
     - target: {fileID: 843940968468039200, guid: 37badb5c1ddb65044a2c65444c17e708,
         type: 3}
