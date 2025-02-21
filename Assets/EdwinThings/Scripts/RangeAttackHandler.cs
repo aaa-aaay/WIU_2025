@@ -7,8 +7,13 @@ public class RangeAttackHandler : MonoBehaviour
     [SerializeField] private Transform playerPos;   
     [SerializeField] private GameObject arrowPrefab;     
     [SerializeField] private Transform shootPoint;       
-    [SerializeField] private float arrowSpeed = 10f;      
+    [SerializeField] private float arrowSpeed = 10f;
 
+    private void Start()
+    {
+        GameObject obj = GameObject.Find("player");
+        playerPos = obj.GetComponent<Transform>();
+    }
 
     void ShootArrow()
     {

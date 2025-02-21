@@ -94,9 +94,10 @@ public class BossAI : MonoBehaviour
                 {
                     Debug.Log("State: Attack");
                     animator.SetBool("IsAttacking", true);
-                    Debug.Log(whichAttack);
+                    Debug.Log(whichAttack); 
                     animator.SetInteger("WhichAttack", whichAttack);
                 }
+
 
                 break;
 
