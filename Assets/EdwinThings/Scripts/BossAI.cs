@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class BossAI : MonoBehaviour
 {
-    [SerializeField] Transform playerPos;
+    Transform playerPos;
     private States currentState;
     [SerializeField] Animator animator;
     [SerializeField] SphereCollider attackCollider;
@@ -27,6 +27,9 @@ public class BossAI : MonoBehaviour
         {
             Debug.LogWarning("There aint no animator sir");
         }
+
+        GameObject obj = GameObject.Find("player");
+        playerPos = obj.GetComponent<Transform>();
     }
 
     // Update is called once per frame

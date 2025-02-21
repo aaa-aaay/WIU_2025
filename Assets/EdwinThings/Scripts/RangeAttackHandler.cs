@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RangeAttackHandler : MonoBehaviour
 {
-    [SerializeField] private Transform playerPos;   
+    private Transform playerPos;   
     [SerializeField] private GameObject arrowPrefab;     
     [SerializeField] private Transform shootPoint;       
     [SerializeField] private float arrowSpeed = 10f;

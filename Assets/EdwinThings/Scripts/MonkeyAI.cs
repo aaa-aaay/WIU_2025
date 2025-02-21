@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class MonkeyAI : MonoBehaviour
 {
-    [SerializeField] Transform playerPos;
+    Transform playerPos;
     private States currentState;
     [SerializeField] Animator animator;
     [SerializeField] SphereCollider attackCollider;
@@ -18,6 +18,10 @@ public class MonkeyAI : MonoBehaviour
 
     void Start()
     {
+        GameObject obj = GameObject.Find("player");
+        if (obj == null) Debug.Log("no player");
+        playerPos = obj.GetComponent<Transform>();
+
         resetAnimationBools();
         currentState = States.CHASE;
         if (animator == null)
@@ -25,7 +29,6 @@ public class MonkeyAI : MonoBehaviour
             Debug.LogWarning("There aint no animator sir");
         }
     }
-
     // Update is called once per frame
     void Update()
     {
